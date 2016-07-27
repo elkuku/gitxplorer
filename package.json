@@ -1,0 +1,27 @@
+{
+  "name": "gitxplorer",
+  "version": "1.0.0",
+  "description": "A git repository explorer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elkuku/gitxplorer.git"
+  },
+  "keywords": [
+    "git",
+    "electron"
+  ],
+  "author": "elkuku",
+  "license": "gpl",
+  "devDependencies": {
+    "electron-prebuilt": "^1.2.0"
+  },
+  "dependencies": {
+    "blueimp-tmpl": "^3.4.0",
+    "electron-config": "^0.2.1",
+    "simple-git": "^1.43.0"
+  }
+}

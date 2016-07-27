@@ -1,0 +1,25 @@
+{
+  "name": "gitxplorer",
+  "description": "A git repository explorer",
+  "main": "main.js",
+  "authors": [
+    "elkuku"
+  ],
+  "license": "gpl",
+  "keywords": [
+    "git",
+    "electron"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "JavaScript-Templates": "blueimp/JavaScript-Templates#^3.4.0"
+  }
+}
