@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GitXplorer</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/gitxplorer.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="folderList container-fluid"></div>
+
+<footer>
+    <div class="container">
+        We are using node <script>document.write(process.versions.node)</script>
+        , Chromium <script>document.write(process.versions.chrome)</script>
+        , and Electron <script>document.write(process.versions.electron)</script>.
+        <p class="stats"></p>
+    </div>
+</footer>
+
+<script type="text/x-tmpl" id="gitStatus">
+<p>
+    On Branch: <span class="gitBranch">{%=o.status.current%}</span>
+    Tracking: <span class="gitBranch">{%=o.status.tracking%}</span>
+{% if (o.status.ahead || o.status.behind) { %}
+    {% if (o.status.ahead) { %}
+        <span class="gitBranchNotInSync">Ahead: {%=o.status.ahead%}</span>
+    {% } %}
+    {% if (o.status.behind) { %}
+         <span class="gitBranchNotInSync">Behind: {%=o.status.behind%}</span>
+   {% } %}
+{% } else { %}
+    <span class="gitBranchInSync">in sync</span>
+{% } %}
+</p>
+
+<p class="gitResultHeader" onclick="$(this).next().toggle()">
+Remotes ({%=o.remotes.length%})
+</p>
+<div class="gitContent">
+    <ul class="unstyled">
+    {% for (var i=0; i<o.remotes.length; i++) { %}
+        <li>
+        <span class="gitBranch">{%=o.remotes[i].name%}</span><br />
+        <b>Fetch:</b> {%=o.remotes[i].refs.fetch%}<br />
+        <b>Push:</b> {%=o.remotes[i].refs.push%}<br />
+
+        </li>
+    {% } %}
+    </ul>
+</div>
+
+{% if (o.branchesInfo.all.length) { %}
+    <p class="gitResultHeader" onclick="$(this).next().toggle()">
+    Branches ({%=o.branchesInfo.all.length%})
+    </p>
+    <ul class="unstyled gitContent">
+    {% for (var i=0; i<o.branchesInfo.all.length; i++) { %}
+        <li>{%=o.branchesInfo.all[i]%}</li>
+    {% } %}
+    </ul>
+{% } %}
+
+{% if (o.tags.all.length) { %}
+    <p class="gitResultHeader" onclick="$(this).next().toggle()">
+    Tags ({%=o.tags.all.length%})
+    </p>
+    <ul class="unstyled gitContent">
+    {% if (o.tags.latest) { %}
+        <li><b>Latest: {%=o.tags.latest%}</b></li>
+    {% } %}
+    {% for (var i=0; i<o.tags.all.length; i++) { %}
+        <li>{%=o.tags.all[i]%}</li>
+    {% } %}
+    </ul>
+{% } %}
+
+{% if (o.status.conflicted.length) { %}
+    <p class="gitResultHeader gitFileConflicted" onclick="$(this).next().toggle()">
+    Conflicted ({%=o.status.conflicted.length%})
+    </p>
+    <ul class="gitFileConflicted unstyled gitContent">
+    {% for (var i=0; i<o.status.conflicted.length; i++) { %}
+        <li>{%=o.status.conflicted[i]%}</li>
+    {% } %}
+    </ul>
+{% } %}
+
+{% if (o.status.created.length) { %}
+    <p class="gitResultHeader gitFileCreated" onclick="$(this).next().toggle()">
+        Created ({%=o.status.created.length%})
+    </p>
+    <ul class="gitFileCreated unstyled gitContent">
+    {% for (var i=0; i<o.status.created.length; i++) { %}
+        <li>{%=o.status.created[i]%}</li>
+    {% } %}
+    </ul>
+{% } %}
+
+{% if (o.status.deleted.length) { %}
+    <p class="gitResultHeader gitFileDeleted" onclick="$(this).next().toggle()">
+        Deleted ({%=o.status.deleted.length%})
+    </p>
+    <ul class="gitFileDeleted unstyled gitContent">
+    {% for (var i=0; i<o.status.deleted.length; i++) { %}
+        <li>{%=o.status.deleted[i]%}</li>
+    {% } %}
+    </ul>
+{% } %}
+
+{% if (o.status.modified.length) { %}
+    <p class="gitResultHeader gitFileModified" onclick="$(this).next().toggle()">
+        Modified  ({%=o.status.modified.length%})
+    </p>
+    <ul class="gitFileModified unstyled gitContent">
+    {% for (var i=0; i<o.status.modified.length; i++) { %}
+        <li>{%=o.status.modified[i]%}</li>
+    {% } %}
+    </ul>
+{% } %}
+
+{% if (o.status.not_added.length) { %}
+    <p class="gitResultHeader gitFileNotAdded" onclick="$(this).next().toggle()">
+        Not added ({%=o.status.not_added.length%})
+    </p>
+    <ul class="gitFileNotAdded unstyled gitContent">
+    {% for (var i=0; i<o.status.not_added.length; i++) { %}
+        <li>{%=o.status.not_added[i]%}</li>
+    {% } %}
+    </ul>
+{% } %}
+
+</script>
+
+<script type="text/x-tmpl" id="gitStatusRow">
+<span class="gitBranch">{%=o.current%}</span> {%=o.ahead%}-{%=o.behind%} | {%=o.conflicted.length%}-{%#o.created.length%}-{%#o.deleted.length%}-{%#o.modified.length%}-{%#o.not_added.length%}
+</script>
+
+<script>window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.min');</script>
+<script>
+    require('./renderer.js')
+</script>
+</body>
+
+</html>

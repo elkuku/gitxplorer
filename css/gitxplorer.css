@@ -1,0 +1,43 @@
+.noGitDir {
+    color: #3b3b3b;
+}
+
+.gitRepo:hover {
+    background-color: #3b3b3b;
+    cursor: pointer;
+}
+
+.gitResultHeader:hover {
+    background-color: #3b3b3b;
+    cursor: pointer;
+}
+
+.gitBranch {
+    color: #2a6496;
+}
+
+.gitBranchNotInSync {
+    color: orange;
+}
+
+.gitBranchInSync {
+    color: green;
+}
+
+.gitFileConflicted, .gitFileNotAdded, .gitFileModified, .gitFileDeleted {
+    color: red;
+    list-style-type: none;
+}
+.gitFileCreated {
+    color: green;
+    list-style-type: none;
+}
+
+.gitContent {
+    background-color: #1E1E1E;
+    display: none;
+}
+
+div.folderList {
+    margin: 10px;
+}
