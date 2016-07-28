@@ -17,24 +17,20 @@ $(function() {
 
     var workDir = '/home/elkuku/repos';
     var dirs = getDirectories(workDir);
-    var container = $('.folderList');
+    //var container = $('.folderList');
+    var container = $('#navigation ul');
 
     for (let dir of dirs) {
 
-        var li = $('<div class="row">'
-            + '<div class="row gitRepo"><div class="col-xs-6">' + dir + '</div><div class="gitStatus col-xs-6 text-right"></div></div>'
-            + '<div class="row gitRepoInfo"><div class="result col-md-12"></div></div>'
-            + '</div>'
-        );
+        var li = $('<li>' + dir + '<div class="gitStatus text-right"></div></li>');
 
         li.attr('id', dir)
             .addClass('gitDir');
 
         if (fs.existsSync(workDir + '/' + dir + '/.git')){
             li.find('.gitStatus').text('loading...');
-            li.find('.gitRepo').on('click', function() {
-                $(document).find('.result').text('');
-                var result = $(this).next().find('.result');
+            li.on('click', function() {
+                var result = $('#gitContent');
                 result.text('Loading info...');
                 var o = {};
                 require('simple-git')(workDir + '/' + dir)
@@ -54,8 +50,20 @@ $(function() {
                         o.diffSummary = data;
                     })
                     .then(function(){
-                        console.log(o);
+                        //console.log(o);
                         result.html(tmpl('gitStatus', o));
+                        $('ul.gitFileModified li').each(function(idx, li) {
+                            $(li).on('click', function() {
+                                $('#gitDiffModal').find('#gitDiffModalLabel').text($(this).text());
+                                require('simple-git')(workDir + '/' + dir)
+                                    .diff([$(this).text()], function (err, data) {
+
+                                        var modal = $('#gitDiffModal');
+                                        modal.find('.gitDiff').text(data);
+                                            modal.modal();
+                                    });
+                            });
+                        });
                     })
             })
         }
@@ -65,18 +73,9 @@ $(function() {
         }
 
         li.appendTo(container);
-
-        /*
-        li.find('a')
-            .attr('href', item.find('link').text())
-            .text(item.find("title").text());
-
-        li.find('img').attr('src', imageSource);
-        */
-
     }
 
-    $('.folderList div.gitDir').each(function(){
+    $('#navigation li.gitDir').each(function(){
         var dir = $(this).attr('id');
         var result = $(this).find('.gitStatus');
         if (result.text()) {
@@ -85,4 +84,5 @@ $(function() {
             })
         }
     });
+
 });

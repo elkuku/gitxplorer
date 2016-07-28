@@ -2,12 +2,12 @@
     color: #3b3b3b;
 }
 
-.gitRepo:hover {
+.gitDir:hover {
     background-color: #3b3b3b;
     cursor: pointer;
 }
 
-.gitResultHeader:hover {
+.gitResultHeader:hover, ul.gitFileModified li:hover {
     background-color: #3b3b3b;
     cursor: pointer;
 }
@@ -33,11 +33,22 @@
     list-style-type: none;
 }
 
+.gitRepoInfo {
+    background-color: black;
+}
 .gitContent {
-    background-color: #1E1E1E;
     display: none;
 }
 
 div.folderList {
     margin: 10px;
+}
+
+@media (min-width: 767px) {
+    #navigation{
+        position: fixed;
+        height: 100%;
+        overflow: auto;
+        overflow-x: hidden;
+    }
 }

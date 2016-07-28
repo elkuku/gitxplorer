@@ -8,17 +8,54 @@
     <link href="css/gitxplorer.css" rel="stylesheet">
 </head>
 <body>
+<div class="container-fluid">
+    <div class="row">
+        <div id="navigation" class="col-lg-2 col-md-3 col-sm-3">
+            <ul class="list-unstyled"></ul>
+        </div>
 
-<div class="folderList container-fluid"></div>
+        <div class="col-lg-2 col-md-3 col-sm-3 hidden-xs">
+            <!-- Placeholder - keep empty -->
+        </div>
 
-<footer>
-    <div class="container">
-        We are using node <script>document.write(process.versions.node)</script>
-        , Chromium <script>document.write(process.versions.chrome)</script>
-        , and Electron <script>document.write(process.versions.electron)</script>.
-        <p class="stats"></p>
+        <div id="main" class="col-lg-10 col-md-9 col-sm-9 fill">
+            <div id="gitContent">Select a repo...</div>
+
+            <footer>
+                <div class="container">
+                    node <script>document.write(process.versions.node)</script>
+                    - Chromium <script>document.write(process.versions.chrome)</script>
+                    - Electron <script>document.write(process.versions.electron)</script>
+                    <p class="stats"></p>
+                </div>
+            </footer>
+
+        </div>
     </div>
-</footer>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="gitDiffModal" tabindex="-1" role="dialog" aria-labelledby="gitDiffModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gitDiffModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <pre class="gitDiff"></pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <script type="text/x-tmpl" id="gitStatus">
 <p>
@@ -135,13 +172,21 @@ Remotes ({%=o.remotes.length%})
 </script>
 
 <script type="text/x-tmpl" id="gitStatusRow">
-<span class="gitBranch">{%=o.current%}</span> {%=o.ahead%}-{%=o.behind%} | {%=o.conflicted.length%}-{%#o.created.length%}-{%#o.deleted.length%}-{%#o.modified.length%}-{%#o.not_added.length%}
+<span class="{% if (o.ahead || o.behind) { %}gitBranchNotInSync{% } %}">{%=o.ahead%}-{%=o.behind%}</span>
+ |
+<span class="
+{% if (o.conflicted.length || o.created.length || o.deleted.length || o.modified.length || o.not_added.length) { %}
+gitBranchNotInSync{% } %}">
+ {%=o.conflicted.length%}-{%#o.created.length%}-{%#o.deleted.length%}-{%#o.modified.length%}-{%#o.not_added.length%}
+</span>
 </script>
 
 <script>window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.min');</script>
-<script>
-    require('./renderer.js')
-</script>
+
+<script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script> require('./renderer.js') </script>
+
 </body>
 
 </html>
