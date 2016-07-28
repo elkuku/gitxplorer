@@ -18,7 +18,6 @@ $(function() {
 
     var workDir = '/home/elkuku/repos';
     var dirs = getDirectories(workDir);
-    //var container = $('.folderList');
     var container = $('#navigation ul');
 
     for (let dir of dirs) {
@@ -31,7 +30,6 @@ $(function() {
         if (fs.existsSync(workDir + '/' + dir + '/.git')){
             li.find('.gitStatus').text('loading...');
             li.on('click', function() {
-                $('#gitRepoHeader').text();
                 var result = $('#gitContent');
                 result.text('Loading info...');
                 var o = {};
@@ -55,24 +53,8 @@ $(function() {
                         o.diffSummary = data;
                     })
                     .then(function(){
-                        //console.log(o);
 
                         result.html(tmpl('gitStatus', o));
-
-                        /*
-                        $('ul.gitFileModified li').each(function(idx, li) {
-                            $(li).on('click', function() {
-                                $('#gitDiffModal').find('#gitDiffModalLabel').text($(this).text());
-                                require('simple-git')(workDir + '/' + dir)
-                                    .diff([$(this).text()], function (err, data) {
-
-                                        var modal = $('#gitDiffModal');
-                                        modal.find('.gitDiff').text(data);
-                                            modal.modal();
-                                    });
-                            });
-                        });
-                        */
 
                         $('div.gitRemotes a').each(function(idx, a) {
                             $(a).on('click', function() {
@@ -89,9 +71,9 @@ $(function() {
                             });
                         });
 
-                        $('span.gitFileOptions').each(function(idx, span) {
+                        $('span.gitFileOptions').each(function() {
                             var file = $(this).parent().text().trim();
-                            $(this).html(tmpl('gitFileOptions', {"file" : file}));
+                            $(this).html(tmpl('gitFileOptions'));
 
                             $(this).parent().find('a').on('click', function() {
                                 var fullPath = workDir + '/' + dir + '/' + file;
@@ -100,12 +82,10 @@ $(function() {
                                         $('#gitDiffModal').find('#gitDiffModalLabel').text(file);
                                         require('simple-git')(workDir + '/' + dir)
                                             .diff([file], function (err, data) {
-
                                                 var modal = $('#gitDiffModal');
                                                 modal.find('.gitDiff').text(data);
                                                 modal.modal();
                                             });
-
                                         break;
                                     case 'Show':
                                         shell.showItemInFolder(fullPath);
@@ -136,5 +116,4 @@ $(function() {
             })
         }
     });
-
 });
