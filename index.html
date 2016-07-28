@@ -58,6 +58,7 @@
 
 
 <script type="text/x-tmpl" id="gitStatus">
+<h4>{%#o.repoPath%}</h4>
 <p>
     On Branch: <span class="gitBranch">{%=o.status.current%}</span>
     Tracking: <span class="gitBranch">{%=o.status.tracking%}</span>
@@ -76,13 +77,13 @@
 <p class="gitResultHeader" onclick="$(this).next().toggle()">
 Remotes ({%=o.remotes.length%})
 </p>
-<div class="gitContent">
+<div class="gitContent gitRemotes">
     <ul class="unstyled">
     {% for (var i=0; i<o.remotes.length; i++) { %}
         <li>
         <span class="gitBranch">{%=o.remotes[i].name%}</span><br />
-        <b>Fetch:</b> {%=o.remotes[i].refs.fetch%}<br />
-        <b>Push:</b> {%=o.remotes[i].refs.push%}<br />
+        <b>Fetch:</b> <a href="javascript">{%=o.remotes[i].refs.fetch%}</a><br />
+        <b>Push:</b> <a href="javascript">{%=o.remotes[i].refs.push%}</a><br />
 
         </li>
     {% } %}
@@ -120,7 +121,7 @@ Remotes ({%=o.remotes.length%})
     </p>
     <ul class="gitFileConflicted unstyled gitContent">
     {% for (var i=0; i<o.status.conflicted.length; i++) { %}
-        <li>{%=o.status.conflicted[i]%}</li>
+        <li><span class="gitFileOptions" /> {%=o.status.conflicted[i]%}</li>
     {% } %}
     </ul>
 {% } %}
@@ -131,7 +132,7 @@ Remotes ({%=o.remotes.length%})
     </p>
     <ul class="gitFileCreated unstyled gitContent">
     {% for (var i=0; i<o.status.created.length; i++) { %}
-        <li>{%=o.status.created[i]%}</li>
+        <li><span class="gitFileOptions" /> {%=o.status.created[i]%}</li>
     {% } %}
     </ul>
 {% } %}
@@ -142,7 +143,7 @@ Remotes ({%=o.remotes.length%})
     </p>
     <ul class="gitFileDeleted unstyled gitContent">
     {% for (var i=0; i<o.status.deleted.length; i++) { %}
-        <li>{%=o.status.deleted[i]%}</li>
+        <li><span class="gitFileOptions" /> {%=o.status.deleted[i]%}</li>
     {% } %}
     </ul>
 {% } %}
@@ -153,7 +154,7 @@ Remotes ({%=o.remotes.length%})
     </p>
     <ul class="gitFileModified unstyled gitContent">
     {% for (var i=0; i<o.status.modified.length; i++) { %}
-        <li>{%=o.status.modified[i]%}</li>
+        <li><span class="gitFileOptions" /> {%=o.status.modified[i]%}</li>
     {% } %}
     </ul>
 {% } %}
@@ -164,7 +165,7 @@ Remotes ({%=o.remotes.length%})
     </p>
     <ul class="gitFileNotAdded unstyled gitContent">
     {% for (var i=0; i<o.status.not_added.length; i++) { %}
-        <li>{%=o.status.not_added[i]%}</li>
+        <li><span class="gitFileOptions" /> {%=o.status.not_added[i]%}</li>
     {% } %}
     </ul>
 {% } %}
@@ -179,6 +180,30 @@ Remotes ({%=o.remotes.length%})
 gitBranchNotInSync{% } %}">
  {%=o.conflicted.length%}-{%#o.created.length%}-{%#o.deleted.length%}-{%#o.modified.length%}-{%#o.not_added.length%}
 </span>
+</script>
+
+<script type="text/x-tmpl" id="gitFileOptions">
+<div class="btn-group">
+  <button class="btn btn-inverse btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    File <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" class="gitFileOptions">
+        <li><a href="#">Open</a></li>
+        <li><a href="#">Show</a></li>
+        <li><a href="#">Diff</a></li>
+  </ul>
+</div></script>
+
+<script type="text/x-tmpl" id="gitFileOptions2">
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+        <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+        <li><a href="#">HTML</a></li>
+        <li><a href="#">CSS</a></li>
+        <li><a href="#">JavaScript</a></li>
+    </ul>
+</div>
 </script>
 
 <script>window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.min');</script>

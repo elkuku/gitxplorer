@@ -52,3 +52,21 @@ div.folderList {
         overflow-x: hidden;
     }
 }
+
+.dropdown-menu {
+    background-color: #0f0f0f;
+    color: cornsilk;
+}
+.dropdown-menux > li {
+    background-color: #0f0f0f;
+    color: cornsilk;
+}
+
+.dropdown-menu > li > a:hover {
+    background-color: #2a6496;
+    color: #000;
+}
+
+.btn-inverse {
+    background-color: #3b3b3b;
+}
