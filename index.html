@@ -11,6 +11,10 @@
 <div class="container-fluid">
     <div class="row">
         <div id="navigation" class="col-lg-2 col-md-3 col-sm-3">
+            <div class="cmdBoxNavi btn-group">
+                <a data-toggle="reload" class="btn btn-inverse btn-sm" href="#" role="button">R</a>
+                <a data-toggle="config" class="btn btn-inverse btn-sm" href="#" role="button">C</a>
+            </div>
             <ul class="list-unstyled"></ul>
         </div>
 
@@ -19,7 +23,25 @@
         </div>
 
         <div id="main" class="col-lg-10 col-md-9 col-sm-9 fill">
+
             <div id="gitContent">Select a repo...</div>
+
+            <div id="gitXplorerConfig" style="display: none">
+                <h3>Configuration</h3>
+                <button id="btnSaveConfig" type="button" class="btn btn-sm btn-success">Save</button>
+
+                <form>
+                    <div class="form-group">
+                        <label for="workDir">Work directory</label>
+                        <input class="form-control" id="workDir" value="{%=o.get('workDir')%}" placeholder="/home/{you}/repositories">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="debug"> Debug
+                        </label>
+                    </div>
+                </form>
+            </div>
 
             <footer>
                 <div class="container">
@@ -192,7 +214,11 @@ gitBranchNotInSync{% } %}">
         <li><a href="#">Show</a></li>
         <li><a href="#">Diff</a></li>
   </ul>
-</div></script>
+</div>
+</script>
+
+<script type="text/x-tmpl" id="gitXplorerConfigxxxxx">
+</script>
 
 <script>window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.min');</script>
 

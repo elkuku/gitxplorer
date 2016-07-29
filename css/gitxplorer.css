@@ -44,15 +44,6 @@ div.folderList {
     margin: 10px;
 }
 
-@media (min-width: 767px) {
-    #navigation{
-        position: fixed;
-        height: 100%;
-        overflow: auto;
-        overflow-x: hidden;
-    }
-}
-
 .dropdown-menu {
     background-color: #0f0f0f;
     color: cornsilk;
@@ -69,4 +60,20 @@ div.folderList {
 
 .btn-inverse {
     background-color: #3b3b3b;
+}
+
+@media (min-width: 767px) {
+    #navigation{
+        position: fixed;
+        height: 100%;
+        overflow: auto;
+        overflow-x: hidden;
+        margin-top: 40px;
+    }
+}
+
+.cmdBoxNavi {
+    position: fixed;
+    top: 0;
+    border-bottom: 1px solid silver;
 }
