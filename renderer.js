@@ -35,29 +35,25 @@ $(function() {
     }
 
     function showConfig() {
-        var container = $('#gitXplorerConfig');
-        $('#workDir').val(config.get('workDir'));
-        container.find('[name=debug]').prop('checked', config.get('debug'));
-        container.show();
-        //$('#gitContent').html(tmpl('gitXplorerConfig', config));
+        $('#gitContent').html(tmpl('gitXplorerConfig', config));
+        $('#btnSaveConfig').on('click', function() {
+            saveConfig();
+        });
     }
 
     function saveConfig() {
-        var container = $('#gitXplorerConfig');
-        var workDir = $('#workDir').val();
-        var debug = false;
+        var workDir = $('#cfgWorkDir').val();
+        var debug = $('#cfgDebug').is(':checked') ? true : false;
 
         if (false == fs.existsSync(workDir)) {
             dialog.showErrorBox('Invalid Path', 'The working directory path is invalid');
             return;
         }
 
-        if (container.find('[name=debug]').is(":checked")) {
-            debug = true;
-        }
-
         config.set('workDir', workDir);
         config.set('debug', debug);
+
+        $('#gitContent').html('Config saved.<br />Select a repo...');
 
         reload();
     }
@@ -175,9 +171,5 @@ $(function() {
 
     cmdBox.find('[data-toggle=reload]').on('click', function() {
         reload();
-    });
-
-    $('#btnSaveConfig').on('click', function() {
-        saveConfig();
     });
 });

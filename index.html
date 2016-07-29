@@ -12,8 +12,12 @@
     <div class="row">
         <div id="navigation" class="col-lg-2 col-md-3 col-sm-3">
             <div class="cmdBoxNavi btn-group">
-                <a data-toggle="reload" class="btn btn-inverse btn-sm" href="#" role="button">R</a>
-                <a data-toggle="config" class="btn btn-inverse btn-sm" href="#" role="button">C</a>
+                <a data-toggle="reload" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Reload" title="Reload">
+                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                </a>
+                <a data-toggle="config" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Config" title="Config">
+                    <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                </a>
             </div>
             <ul class="list-unstyled"></ul>
         </div>
@@ -25,23 +29,6 @@
         <div id="main" class="col-lg-10 col-md-9 col-sm-9 fill">
 
             <div id="gitContent">Select a repo...</div>
-
-            <div id="gitXplorerConfig" style="display: none">
-                <h3>Configuration</h3>
-                <button id="btnSaveConfig" type="button" class="btn btn-sm btn-success">Save</button>
-
-                <form>
-                    <div class="form-group">
-                        <label for="workDir">Work directory</label>
-                        <input class="form-control" id="workDir" value="{%=o.get('workDir')%}" placeholder="/home/{you}/repositories">
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="debug"> Debug
-                        </label>
-                    </div>
-                </form>
-            </div>
 
             <footer>
                 <div class="container">
@@ -217,7 +204,27 @@ gitBranchNotInSync{% } %}">
 </div>
 </script>
 
-<script type="text/x-tmpl" id="gitXplorerConfigxxxxx">
+<script type="text/x-tmpl" id="gitXplorerConfig">
+<h3>Configuration</h3>
+
+{% if (!o.get('workDir')) { %}
+    <div class="alert alert-info" role="alert">
+        Please set the "Work directory" to the root where your repositories are located.
+    </div>
+{% } %}
+
+<form>
+    <div class="form-group">
+        <label for="workDir">Work directory</label>
+        <input class="form-control" id="cfgWorkDir" value="{%=o.get('workDir')%}" placeholder="/home/{you}/repositories">
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" id="cfgDebug"{% if (o.get('debug')) { %} checked="checked"{% } %}> Debug
+        </label>
+    </div>
+    <button id="btnSaveConfig" type="button" class="btn btn-sm btn-success">Save</button>
+</form>
 </script>
 
 <script>window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.min');</script>
