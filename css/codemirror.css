@@ -1,0 +1,12 @@
+.CodeMirror {
+    color: white;
+    background-color: black;
+}
+
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+    background-color: black; /* The little square between H and V scrollbars */
+}
+
+textarea.codemirror {
+    display: none;
+}
