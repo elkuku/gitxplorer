@@ -116,7 +116,8 @@ $(function() {
                             });
 
                             $('span.gitFileOptions').each(function () {
-                                var file = $(this).parent().text().trim();
+                                var parent = $(this).parent();
+                                var file = parent.text().trim();
                                 $(this).html(tmpl('gitFileOptions'));
 
                                 $(this).parent().find('a').on('click', function () {
@@ -126,9 +127,10 @@ $(function() {
                                             $('#gitDiffModal').find('#gitDiffModalLabel').text(file);
                                             require('simple-git')(workDir + '/' + dir)
                                                 .diff([file], function (err, data) {
-                                                    var modal = $('#gitDiffModal');
-                                                    modal.find('.gitDiff').text(data);
-                                                    modal.modal();
+                                                    var cmContainer = $(parent.find('.codemirror'));
+                                                    cmContainer.text(data);
+                                                    $(document).find('.CodeMirror').remove();
+                                                    CodeMirror.fromTextArea(cmContainer[0]);
                                                 });
                                             break;
                                         case 'Show':

@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "JavaScript-Templates": "blueimp/JavaScript-Templates#^3.4.0"
+    "JavaScript-Templates": "blueimp/JavaScript-Templates#^3.4.0",
+    "codemirror": "codemirror/codemirror#^5.17.0"
   }
 }
