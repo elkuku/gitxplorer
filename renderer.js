@@ -1,9 +1,9 @@
-$(function() {
+$(function () {
 
     var tmpl = require('./bower_components/JavaScript-Templates/js/tmpl');
     var os = require('os');
-    const {shell} = require('electron')
-    const {dialog} = require('electron').remote
+    const {shell} = require('electron');
+    const {dialog} = require('electron').remote;
 
     const Conf = require('conf');
     const config = new Conf();
@@ -11,15 +11,19 @@ $(function() {
     var fs = require('fs'),
         path = require('path');
 
+    // Check if "Wheit" (Light) template is selected
+    if('Wheit' == config.get('theme')) {
+        $('head link#styleSheet').attr('href', 'css/gitxplorer_light.css');
+    }
+
     $('.stats').append('Number of cpu cores: <span>' + os.cpus().length + '</span>')
         .append(' - Free memory: <span>' + os.freemem() + '</span>');
 
     if (!config.get('workDir')) {
         showConfig();
     }
-    else
-    {
-        if(fs.existsSync(config.get('workDir'))) {
+    else {
+        if (fs.existsSync(config.get('workDir'))) {
             reload();
         }
         else {
@@ -29,21 +33,34 @@ $(function() {
     }
 
     function getDirectories(srcpath) {
-        return fs.readdirSync(srcpath).filter(function(file) {
+        return fs.readdirSync(srcpath).filter(function (file) {
             return fs.statSync(path.join(srcpath, file)).isDirectory();
         });
     }
 
     function showConfig() {
         $('#gitContent').html(tmpl('gitXplorerConfig', config));
-        $('#btnSaveConfig').on('click', function() {
+        $('#btnSaveConfig').on('click', function () {
             saveConfig();
+        });
+        $('#cfgTheme').on('change', function () {
+            console.log($(this).val());
+            var e = $('head link#styleSheet');
+
+            if('Bläk' == $(this).val()) {
+                e.attr('href', 'css/gitxplorer.css');
+            } else {
+                e.attr('href', 'css/gitxplorer_light.css');
+            }
         });
     }
 
     function saveConfig() {
         var workDir = $('#cfgWorkDir').val();
+        var theme = $('#cfgTemplate').val();
         var debug = $('#cfgDebug').is(':checked') ? true : false;
+
+        console.log(theme);
 
         if (false == fs.existsSync(workDir)) {
             dialog.showErrorBox('Invalid Path', 'The working directory path is invalid');
@@ -52,6 +69,7 @@ $(function() {
 
         config.set('workDir', workDir);
         config.set('debug', debug);
+        config.set('theme', theme);
 
         $('#gitContent').html('Config saved.<br />Select a repo...');
 
@@ -101,7 +119,7 @@ $(function() {
 
                             result.html(tmpl('gitStatus', o));
 
-                            $('div.gitRemotes a').each(function (idx, a) {
+                            $('ul.gitRemotes a').each(function (idx, a) {
                                 $(a).on('click', function () {
                                     var link = $(this).text();
 
@@ -122,18 +140,64 @@ $(function() {
 
                                 $(this).parent().find('a').on('click', function () {
                                     var fullPath = workDir + '/' + dir + '/' + file;
+                                    CodeMirror.modeURL = './bower_components/codemirror/mode/%N/%N.js';
                                     switch ($(this).text()) {
                                         case 'Diff':
                                             $('#gitDiffModal').find('#gitDiffModalLabel').text(file);
                                             require('simple-git')(workDir + '/' + dir)
                                                 .diff([file], function (err, data) {
+                                                    $(document).find('.CodeMirror').remove();
                                                     var cmContainer = $(parent.find('.codemirror'));
                                                     cmContainer.text(data);
-                                                    $(document).find('.CodeMirror').remove();
-                                                    CodeMirror.fromTextArea(cmContainer[0]);
+                                                    var info = CodeMirror.findModeByExtension('diff');
+                                                    var editor = CodeMirror.fromTextArea(cmContainer[0],
+                                                        {
+                                                            readOnly: true,
+                                                            autofocus: true,
+                                                            mode: info.mime
+                                                        }
+                                                    );
+                                                    CodeMirror.autoLoadMode(editor, info.mode);
                                                 });
                                             break;
                                         case 'Show':
+                                            var cmContainer = $(parent.find('.codemirror'));
+                                            fs.readFile(fullPath, 'utf8', function (err, contents) {
+                                                cmContainer.text(contents);
+                                                $(document).find('.CodeMirror').remove();
+                                                var m, mode, spec, info;
+                                                if (m = /.+\.([^.]+)$/.exec(file)) {
+                                                    info = CodeMirror.findModeByExtension(m[1]);
+                                                    if (info) {
+                                                        spec = info.mime;
+                                                        mode = info.mode;
+                                                    }
+                                                    else {
+                                                        if($.inArray(m[1], ['dist', 'iml', 'svg']) > -1) {
+                                                            mode = 'xml';
+                                                            spec = 'application/xml';
+                                                        } else {
+                                                            mode = spec = m[1];
+                                                        }
+                                                    }
+                                                }
+                                                else {
+                                                    mode = spec = 'txt';
+                                                }
+
+                                                var editor = CodeMirror.fromTextArea(cmContainer[0],
+                                                    {
+                                                        lineNumbers: true,
+                                                        readOnly: true,
+                                                        autofocus: true,
+                                                        mode: spec
+                                                    }
+                                                );
+
+                                                CodeMirror.autoLoadMode(editor, mode);
+                                            });
+                                            break;
+                                        case 'File Manager':
                                             shell.showItemInFolder(fullPath);
                                             break;
                                         case 'Open':
@@ -167,11 +231,25 @@ $(function() {
     // Setup buttons
     var cmdBox = $('.cmdBoxNavi');
 
-    cmdBox.find('[data-toggle=config]').on('click', function() {
+    cmdBox.find('[data-toggle=config]').on('click', function () {
         showConfig();
     });
 
-    cmdBox.find('[data-toggle=reload]').on('click', function() {
+    cmdBox.find('[data-toggle=reload]').on('click', function () {
         reload();
+        $('#gitContent').text('Select a repo...');
     });
+
+    cmdBox.find('[data-toggle=theme]').on('click', function () {
+        var e = $('head link#styleSheet');
+
+        if(e.attr('href').indexOf('light') > 0) {
+            e.attr('href', 'css/gitxplorer.css');
+        } else {
+            e.attr('href', 'css/gitxplorer_light.css');
+        }
+    });
+
+    function toggleTemplate() {
+    }
 });

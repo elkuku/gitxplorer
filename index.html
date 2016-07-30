@@ -5,9 +5,7 @@
     <title>GitXplorer</title>
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="bower_components/codemirror/lib/codemirror.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
-    <link href="css/gitxplorer.css" rel="stylesheet">
-    <link href="css/codemirror.css" rel="stylesheet">
+    <link id="styleSheet" href="css/gitxplorer.css" rel="stylesheet">
 </head>
 <body>
 <div class="container-fluid">
@@ -16,6 +14,9 @@
             <div class="cmdBoxNavi btn-group">
                 <a data-toggle="reload" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Reload" title="Reload">
                     <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                </a>
+                <a data-toggle="theme" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Theme" title="Theme">
+                    <span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>
                 </a>
                 <a data-toggle="config" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Config" title="Config">
                     <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
@@ -48,26 +49,54 @@
 
 <script type="text/x-tmpl" id="gitStatus">
 <h4>{%#o.repoPath%}</h4>
-<p>
+
+<!-- Tab header -->
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#tabInfo">Info</a></li>
+    <li><a data-toggle="tab" href="#tabRemotes">Remotes ({%=o.remotes.length%})</a></li>
+    {% if (o.branchesInfo.all.length) { %}
+        <li><a data-toggle="tab" href="#tabBranches">Branches ({%=o.branchesInfo.all.length%})</a></li>
+    {% } %}
+    {% if (o.tags.all.length) { %}
+        <li><a data-toggle="tab" href="#tabTags">Tags ({%=o.tags.all.length%})</a></li>
+    {% } %}
+    {% if (o.status.conflicted.length) { %}
+        <li><a data-toggle="tab" href="#tabConflicted" class="gitFileConflicted">Conflicted ({%=o.status.conflicted.length%})</a></li>
+    {% } %}
+    {% if (o.status.created.length) { %}
+        <li><a data-toggle="tab" href="#tabCreated" class="gitFileCreated">Created ({%=o.status.created.length%})</a></li>
+    {% } %}
+    {% if (o.status.deleted.length) { %}
+        <li><a data-toggle="tab" href="#tabDeleted" class="gitFileDeleted">Deleted ({%=o.status.deleted.length%})</a></li>
+    {% } %}
+    {% if (o.status.modified.length) { %}
+        <li><a data-toggle="tab" href="#tabModified" class="gitFileModified">Modified  ({%=o.status.modified.length%})</a></li>
+    {% } %}
+    {% if (o.status.not_added.length) { %}
+        <li><a data-toggle="tab" href="#tabNotAdded" class="gitFileNotAdded">Not added ({%=o.status.not_added.length%})</a></li>
+    {% } %}
+</ul>
+
+<!-- Tab content -->
+<div class="tab-content">
+
+<div id="tabInfo" class="tab-pane fade in active">
     On Branch: <span class="gitBranch">{%=o.status.current%}</span>
     Tracking: <span class="gitBranch">{%=o.status.tracking%}</span>
-{% if (o.status.ahead || o.status.behind) { %}
-    {% if (o.status.ahead) { %}
-        <span class="gitBranchNotInSync">Ahead: {%=o.status.ahead%}</span>
+    {% if (o.status.ahead || o.status.behind) { %}
+        {% if (o.status.ahead) { %}
+            <span class="gitBranchNotInSync">Ahead: {%=o.status.ahead%}</span>
+        {% } %}
+        {% if (o.status.behind) { %}
+             <span class="gitBranchNotInSync">Behind: {%=o.status.behind%}</span>
+       {% } %}
+    {% } else { %}
+        <span class="gitBranchInSync">in sync</span>
     {% } %}
-    {% if (o.status.behind) { %}
-         <span class="gitBranchNotInSync">Behind: {%=o.status.behind%}</span>
-   {% } %}
-{% } else { %}
-    <span class="gitBranchInSync">in sync</span>
-{% } %}
-</p>
+</div>
 
-<p class="gitResultHeader" onclick="$(this).next().toggle()">
-Remotes ({%=o.remotes.length%})
-</p>
-<div class="gitContent gitRemotes">
-    <ul class="unstyled">
+<div id="tabRemotes" class="tab-pane fade">
+    <ul class="unstyled gitRemotes">
     {% for (var i=0; i<o.remotes.length; i++) { %}
         <li>
         <span class="gitBranch">{%=o.remotes[i].name%}</span><br />
@@ -80,21 +109,18 @@ Remotes ({%=o.remotes.length%})
 </div>
 
 {% if (o.branchesInfo.all.length) { %}
-    <p class="gitResultHeader" onclick="$(this).next().toggle()">
-    Branches ({%=o.branchesInfo.all.length%})
-    </p>
-    <ul class="unstyled gitContent">
+ <div id="tabBranches" class="tab-pane fade">
+    <ul class="unstyled">
     {% for (var i=0; i<o.branchesInfo.all.length; i++) { %}
         <li>{%=o.branchesInfo.all[i]%}</li>
     {% } %}
     </ul>
+    </div>
 {% } %}
 
 {% if (o.tags.all.length) { %}
-    <p class="gitResultHeader" onclick="$(this).next().toggle()">
-    Tags ({%=o.tags.all.length%})
-    </p>
-    <ul class="unstyled gitContent">
+  <div id="tabTags" class="tab-pane fade">
+   <ul class="unstyled">
     {% if (o.tags.latest) { %}
         <li><b>Latest: {%=o.tags.latest%}</b></li>
     {% } %}
@@ -102,63 +128,59 @@ Remotes ({%=o.remotes.length%})
         <li>{%=o.tags.all[i]%}</li>
     {% } %}
     </ul>
+    </div>
 {% } %}
 
 {% if (o.status.conflicted.length) { %}
-    <p class="gitResultHeader gitFileConflicted" onclick="$(this).next().toggle()">
-    Conflicted ({%=o.status.conflicted.length%})
-    </p>
-    <ul class="gitFileConflicted unstyled gitContent">
+  <div id="tabConflicted" class="tab-pane fade">
+    <ul class="gitFileConflicted unstyled">
     {% for (var i=0; i<o.status.conflicted.length; i++) { %}
-        <li><span class="gitFileOptions" /> {%=o.status.conflicted[i]%}</li>
+        <li><span class="gitFileOptions" /> {%=o.status.conflicted[i]%}<textarea class="codemirror" /></li>
     {% } %}
     </ul>
+    </div>
 {% } %}
 
 {% if (o.status.created.length) { %}
-    <p class="gitResultHeader gitFileCreated" onclick="$(this).next().toggle()">
-        Created ({%=o.status.created.length%})
-    </p>
-    <ul class="gitFileCreated unstyled gitContent">
+   <div id="tabCreated" class="tab-pane fade">
+    <ul class="gitFileCreated unstyled">
     {% for (var i=0; i<o.status.created.length; i++) { %}
-        <li><span class="gitFileOptions" /> {%=o.status.created[i]%}</li>
+        <li><span class="gitFileOptions" /> {%=o.status.created[i]%}<textarea class="codemirror" /></li>
     {% } %}
     </ul>
+    </div>
 {% } %}
 
 {% if (o.status.deleted.length) { %}
-    <p class="gitResultHeader gitFileDeleted" onclick="$(this).next().toggle()">
-        Deleted ({%=o.status.deleted.length%})
-    </p>
-    <ul class="gitFileDeleted unstyled gitContent">
+   <div id="tabDeleted" class="tab-pane fade">
+    <ul class="gitFileDeleted unstyled">
     {% for (var i=0; i<o.status.deleted.length; i++) { %}
         <li><span class="gitFileOptions" /> {%=o.status.deleted[i]%}</li>
     {% } %}
     </ul>
+    </div>
 {% } %}
 
 {% if (o.status.modified.length) { %}
-    <p class="gitResultHeader gitFileModified" onclick="$(this).next().toggle()">
-        Modified  ({%=o.status.modified.length%})
-    </p>
-    <ul class="gitFileModified unstyled gitContent">
+    <div id="tabModified" class="tab-pane fade">
+    <ul class="gitFileModified unstyled">
     {% for (var i=0; i<o.status.modified.length; i++) { %}
         <li><span class="gitFileOptions" /> {%=o.status.modified[i]%}<textarea class="codemirror"></textarea></li>
     {% } %}
     </ul>
+    </div>
 {% } %}
 
 {% if (o.status.not_added.length) { %}
-    <p class="gitResultHeader gitFileNotAdded" onclick="$(this).next().toggle()">
-        Not added ({%=o.status.not_added.length%})
-    </p>
-    <ul class="gitFileNotAdded unstyled gitContent">
+   <div id="tabNotAdded" class="tab-pane fade">
+    <ul class="gitFileNotAdded unstyled">
     {% for (var i=0; i<o.status.not_added.length; i++) { %}
-        <li><span class="gitFileOptions" /> {%=o.status.not_added[i]%}</li>
+        <li><span class="gitFileOptions" /> {%=o.status.not_added[i]%}<textarea class="codemirror" /></li>
     {% } %}
     </ul>
+    </div>
 {% } %}
-
+</div>
 </script>
 
 <script type="text/x-tmpl" id="gitStatusRow">
@@ -177,9 +199,11 @@ gitBranchNotInSync{% } %}">
     File <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" class="gitFileOptions">
-        <li><a href="#">Open</a></li>
-        <li><a href="#">Show</a></li>
-        <li><a href="#">Diff</a></li>
+    <li><a href="#">Show</a></li>
+    <li><a href="#">Diff</a></li>
+    <li class="divider"></li>
+    <li><a href="#">Open</a></li>
+    <li><a href="#">File Manager</a></li>
   </ul>
 </div>
 </script>
@@ -198,7 +222,14 @@ gitBranchNotInSync{% } %}">
         <label for="workDir">Work directory</label>
         <input class="form-control" id="cfgWorkDir" value="{%=o.get('workDir')%}" placeholder="/home/{you}/repositories">
     </div>
-    <div class="checkbox">
+     <div class="form-group">
+        <label for="cfgTheme">Theme</label>
+        <select id="cfgTheme" class="form-control">
+            <option{% if ('Bläck' == o.get('theme')) { %} selected="selected"{% } %}>Bläk</option>
+            <option{% if ('Wheit' == o.get('theme')) { %} selected="selected"{% } %}>Wheit</option>
+        </select>
+     </div>
+   <div class="checkbox">
         <label>
             <input type="checkbox" id="cfgDebug"{% if (o.get('debug')) { %} checked="checked"{% } %}> Debug
         </label>
@@ -210,8 +241,11 @@ gitBranchNotInSync{% } %}">
 <script>window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.min');</script>
 
 <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
 <script src="./bower_components/codemirror/lib/codemirror.js"></script>
-<script src="./bower_components/codemirror/mode/diff/diff.js"></script>
+<script src="./bower_components/codemirror/addon/mode/loadmode.js"></script>
+<script src="./bower_components/codemirror/mode/meta.js"></script>
+
 <script> require('./renderer.js') </script>
 
 </body>

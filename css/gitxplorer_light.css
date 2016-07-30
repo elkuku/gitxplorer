@@ -10,17 +10,11 @@ p,h1,h2,h3,h4 {
 }
 
 body {
-    background: #1E1E1E;
-    color: #f9f9f9;
     overflow-x: hidden;
 }
 
-a {
-    color:#bcbcbc;
-}
-
 h3, h4, h5 {
-    color:#555555;
+    color: #969696;
 }
 
 @media (min-width: 767px) {
@@ -39,31 +33,17 @@ h3, h4, h5 {
     border-bottom: 1px solid silver;
 }
 
-::-webkit-scrollbar {
-    height: 12px;
-    width: 12px;
-    background: #111111;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #545454;
-}
-
-::-webkit-scrollbar-corner {
-    background: #545454;
-}
-
 .noGitDir {
-    color: #3b3b3b;
+    color: #b4b4b4;
 }
 
 .gitDir:hover {
-    background-color: #3b3b3b;
+    background-color: #d4d4d4;
     cursor: pointer;
 }
 
 .gitBranch {
-    color: #ff5e93;
+    color: #96226e;
 }
 
 .gitBranchNotInSync {
@@ -92,54 +72,15 @@ h3, h4, h5 {
 .gitRepoInfo {
     background-color: black;
 }
-
-#gitContent {
-    margin-bottom: 100px;
-}
-
-.dropdown-menu {
-    background-color: #0f0f0f;
-}
-
-.dropdown-menu > li > a {
-    color: lightyellow;
-}
-.dropdown-menu > li > a:hover {
-    background-color: #2a6496;
-    color: #000;
-}
-
-.btn-inverse {
-    background-color: #3b3b3b;
-    color: lightyellow;
-}
-
-.btn-inverse:hover, .btn-inverse:focus {
-    color: yellow;
-}
-
-
-/* CodeMirror */
-
-.CodeMirror {
-    color: white;
-    background-color: #0f0f0f;
+.gitContent {
+    display: none;
 }
 
 textarea.codemirror {
     display: none;
 }
 
-.CodeMirror-linenumber, .CodeMirror-gutter, .CodeMirror-gutters,
-.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
-    background-color: #111111;
-}
-
 /* Tabs */
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover, .nav-tabs>li>a:hover {
-    background-color: #494949;
-    color: #888400;
-}
 
 .nav-tabs > li > a {
     padding-top: 4px;
@@ -150,7 +91,7 @@ footer {
     position: fixed;
     bottom: 0;
     border-top: 1px solid silver;
-    background: #444444;
+    background: #b0b0b0;
 }
 
 ul.unstyled {
