@@ -44,7 +44,6 @@ $(function () {
             saveConfig();
         });
         $('#cfgTheme').on('change', function () {
-            console.log($(this).val());
             var e = $('head link#styleSheet');
 
             if('Bläk' == $(this).val()) {
@@ -59,8 +58,6 @@ $(function () {
         var workDir = $('#cfgWorkDir').val();
         var theme = $('#cfgTemplate').val();
         var debug = $('#cfgDebug').is(':checked') ? true : false;
-
-        console.log(theme);
 
         if (false == fs.existsSync(workDir)) {
             dialog.showErrorBox('Invalid Path', 'The working directory path is invalid');
