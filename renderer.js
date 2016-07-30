@@ -11,7 +11,7 @@ $(function () {
     var fs = require('fs'),
         path = require('path');
 
-    // Check if "Wheit" (Light) template is selected
+    // Check if "Wheit" (Light) theme is selected
     if('Wheit' == config.get('theme')) {
         $('head link#styleSheet').attr('href', 'css/gitxplorer_light.css');
     }
@@ -56,7 +56,7 @@ $(function () {
 
     function saveConfig() {
         var workDir = $('#cfgWorkDir').val();
-        var theme = $('#cfgTemplate').val();
+        var theme = $('#cfgTheme').val();
         var debug = $('#cfgDebug').is(':checked') ? true : false;
 
         if (false == fs.existsSync(workDir)) {
@@ -246,7 +246,4 @@ $(function () {
             e.attr('href', 'css/gitxplorer_light.css');
         }
     });
-
-    function toggleTemplate() {
-    }
 });
