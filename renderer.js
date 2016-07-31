@@ -1,22 +1,22 @@
 $(function () {
 
-    var tmpl = require('./bower_components/JavaScript-Templates/js/tmpl');
-    var os = require('os');
-    const {shell} = require('electron');
-    const {dialog} = require('electron').remote;
-
-    const Conf = require('conf');
-    const config = new Conf();
-
-    var fs = require('fs'),
+    const
+        tmpl = require('./bower_components/JavaScript-Templates/js/tmpl'),
+        os = require('os'),
+        {shell} = require('electron'),
+        {dialog} = require('electron').remote,
+        Conf = require('conf'),
+        config = new Conf(),
+        fs = require('fs'),
         path = require('path');
 
     // Check if "Wheit" (Light) theme is selected
-    if('Wheit' == config.get('theme')) {
+    if ('Wheit' == config.get('theme')) {
         $('head link#styleSheet').attr('href', 'css/gitxplorer_light.css');
     }
 
-    $('.stats').append('Number of cpu cores: <span>' + os.cpus().length + '</span>')
+    $('.stats')
+        .append('Number of cpu cores: <span>' + os.cpus().length + '</span>')
         .append(' - Free memory: <span>' + os.freemem() + '</span>');
 
     if (!config.get('workDir')) {
@@ -46,7 +46,7 @@ $(function () {
         $('#cfgTheme').on('change', function () {
             var e = $('head link#styleSheet');
 
-            if('Bläk' == $(this).val()) {
+            if ('Bläk' == $(this).val()) {
                 e.attr('href', 'css/gitxplorer.css');
             } else {
                 e.attr('href', 'css/gitxplorer_light.css');
@@ -90,6 +90,8 @@ $(function () {
             if (fs.existsSync(workDir + '/' + dir + '/.git')) {
                 li.find('.gitStatus').text('loading...');
                 li.on('click', function () {
+                    $(this).parent().find('li').removeClass('active');
+                    $(this).addClass('active');
                     var result = $('#gitContent');
                     result.text('Loading info...');
                     var o = {};
@@ -140,7 +142,6 @@ $(function () {
                                     CodeMirror.modeURL = './bower_components/codemirror/mode/%N/%N.js';
                                     switch ($(this).text()) {
                                         case 'Diff':
-                                            $('#gitDiffModal').find('#gitDiffModalLabel').text(file);
                                             require('simple-git')(workDir + '/' + dir)
                                                 .diff([file], function (err, data) {
                                                     $(document).find('.CodeMirror').remove();
@@ -170,7 +171,7 @@ $(function () {
                                                         mode = info.mode;
                                                     }
                                                     else {
-                                                        if($.inArray(m[1], ['dist', 'iml', 'svg']) > -1) {
+                                                        if ($.inArray(m[1], ['dist', 'iml', 'svg']) > -1) {
                                                             mode = 'xml';
                                                             spec = 'application/xml';
                                                         } else {
@@ -240,7 +241,7 @@ $(function () {
     cmdBox.find('[data-toggle=theme]').on('click', function () {
         var e = $('head link#styleSheet');
 
-        if(e.attr('href').indexOf('light') > 0) {
+        if (e.attr('href').indexOf('light') > 0) {
             e.attr('href', 'css/gitxplorer.css');
         } else {
             e.attr('href', 'css/gitxplorer_light.css');

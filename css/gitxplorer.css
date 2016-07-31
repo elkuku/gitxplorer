@@ -57,7 +57,7 @@ h3, h4, h5 {
     color: #3b3b3b;
 }
 
-.gitDir:hover {
+.gitDir:hover, .gitDir.active {
     background-color: #3b3b3b;
     cursor: pointer;
 }
@@ -98,14 +98,14 @@ h3, h4, h5 {
 }
 
 .dropdown-menu {
-    background-color: #0f0f0f;
+    background-color: #242424;
 }
 
 .dropdown-menu > li > a {
     color: lightyellow;
 }
 .dropdown-menu > li > a:hover {
-    background-color: #2a6496;
+    background-color: #3b3b3b;
     color: #000;
 }
 
@@ -115,7 +115,7 @@ h3, h4, h5 {
 }
 
 .btn-inverse:hover, .btn-inverse:focus {
-    color: yellow;
+    color: #abab00;
 }
 
 
@@ -144,6 +144,10 @@ textarea.codemirror {
 .nav-tabs > li > a {
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+.tab-content {
+    padding-top: 10px;
 }
 
 footer {

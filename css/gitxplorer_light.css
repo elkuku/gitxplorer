@@ -37,7 +37,7 @@ h3, h4, h5 {
     color: #b4b4b4;
 }
 
-.gitDir:hover {
+.gitDir:hover, .gitDir.active {
     background-color: #d4d4d4;
     cursor: pointer;
 }
@@ -85,6 +85,10 @@ textarea.codemirror {
 .nav-tabs > li > a {
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+.tab-content {
+    padding-top: 10px;
 }
 
 footer {
