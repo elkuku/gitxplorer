@@ -68,69 +68,19 @@ $(function () {
 
             var li = $('<li>' + dir + '<div class="gitStatus text-right"></div></li>');
 
-            li.attr('id', dir)
-                .addClass('gitDir');
+            li.attr('id', dir);
 
-            if (fs.existsSync(workDir + '/' + dir + '/.git')) {
+            if (!fs.existsSync(workDir + '/' + dir + '/.git')) {
+                li.addClass('noGitDir');
+            }
+            else {
+                li.addClass('gitDir');
                 li.find('.gitStatus').text('loading...');
                 li.on('click', function () {
                     $(this).parent().find('li').removeClass('active');
                     $(this).addClass('active');
-                    var result = $('#gitContent');
-                    result.text('Loading info...');
-                    var o = {};
-
-                    o.repoPath = workDir + '/' + dir;
-
-                    require('simple-git')(workDir + '/' + dir)
-                        .status(function (err, data) {
-                            o.status = data;
-                        })
-                        .getRemotes(true, function (err, data) {
-                            o.remotes = data;
-                        })
-                        .tags(function (err, data) {
-                            o.tags = data;
-                        })
-                        .branch(function (err, data) {
-                            o.branchesInfo = data;
-                        })
-                        .diffSummary(function (err, data) {
-                            o.diffSummary = data;
-                        })
-                        .then(function () {
-
-                            result.html(tmpl('gitStatus', o));
-
-                            $('ul.gitRemotes a').each(function (idx, a) {
-                                $(a).on('click', function () {
-                                    var link = $(this).text();
-
-                                    if (0 == link.indexOf('git@')) {
-                                        link = link.replace(':', '/')
-                                            .replace('git@', 'https://');
-                                    }
-
-                                    shell.openExternal(link);
-                                    return false;
-                                });
-                            });
-
-                            $('span.gitFileOptions').each(function () {
-                                var parent = $(this).parent();
-                                var file = parent.text().trim();
-                                $(this).html(tmpl('gitFileOptions'));
-
-                                $(this).parent().find('a').on('click', function () {
-
-                                    handleFileOptions($(this).text(), workDir + '/' + dir, file, $(parent.find('.codemirror')));
-                                });
-                            });
-                        })
+                    scanRepository(workDir + '/' + dir);
                 })
-            }
-            else {
-                li.addClass('noGitDir').removeClass('gitDir');
             }
 
             li.appendTo(container);
@@ -146,6 +96,60 @@ $(function () {
                 })
             }
         });
+    }
+
+    function scanRepository(repoPath) {
+        var result = $('#gitContent');
+        result.text('Loading info...');
+
+        var o = {};
+
+        o.repoPath = repoPath;
+
+        require('simple-git')(repoPath)
+            .status(function (err, data) {
+                o.status = data;
+            })
+            .getRemotes(true, function (err, data) {
+                o.remotes = data;
+            })
+            .tags(function (err, data) {
+                o.tags = data;
+            })
+            .branch(function (err, data) {
+                o.branchesInfo = data;
+            })
+            .diffSummary(function (err, data) {
+                o.diffSummary = data;
+            })
+            .then(function () {
+
+                result.html(tmpl('gitStatus', o));
+
+                $('ul.gitRemotes a').each(function (idx, a) {
+                    $(a).on('click', function () {
+                        var link = $(this).text();
+
+                        if (0 == link.indexOf('git@')) {
+                            link = link.replace(':', '/')
+                                .replace('git@', 'https://');
+                        }
+
+                        shell.openExternal(link);
+                        return false;
+                    });
+                });
+
+                $('span.gitFileOptions').each(function () {
+                    var parent = $(this).parent();
+                    var file = parent.text().trim();
+                    $(this).html(tmpl('gitFileOptions'));
+
+                    $(this).parent().find('a').on('click', function () {
+                        handleFileOptions($(this).text(), repoPath, file, $(parent.find('.codemirror')));
+                    });
+                });
+            })
     }
 
     /**
