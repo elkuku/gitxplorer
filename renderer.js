@@ -102,7 +102,7 @@ $(function () {
         var result = $('#gitContent');
 
         result.text('Loading info...');
-        $('#gitRepoConsole').html();
+        $('#gitRepoConsole').html('');
 
         var o = {};
 
@@ -160,17 +160,15 @@ $(function () {
                 });
 
                 $('#btnFetchRepo').on('click', function () {
-                    console.log('fetching...');
+                    displayGitResponse('Processing', $('#gitRepoConsole'), null, null);
                     require('simple-git')(repoPath).fetch(function(err, data){
-                        console.log({'err' : err, 'data':data});
                         displayGitResponse('Fetch', $('#gitRepoConsole'), err, data);
                     });
                 });
 
                 $('#btnPullRepo').on('click', function () {
-                    console.log('pulling...');
+                    displayGitResponse('Processing', $('#gitRepoConsole'), null, null);
                     require('simple-git')(repoPath).pull(function(err, data){
-                        console.log({'err' : err, 'data':data});
                         displayGitResponse('Pull', $('#gitRepoConsole'), err, data);
                     });
                 });
@@ -259,25 +257,23 @@ $(function () {
 
     function displayGitResponse(action, container, err, data) {
 
-        var type = 'info', message = action + ' completed.';
+        var type = 'info',
+            message = action + ' completed.';
+
         if(err) {
             type = 'danger';
             message = '<strong>Error</strong><pre>' + err + '</pre>';
-
-            //container.html('<pre class="alert alert-danger">' + err + '</pre>');
         } else if(data) {
             message = JSON.stringify(data);
-            //container.html('<pre class="alert alert-info">' + JSON.stringify(data) + '</pre>');
-        } else {
-            //container.html('<pre class="alert alert-info">Action completed.</pre>');
+        } else if('Processing' == action) {
+            message = '<strong>Processing</strong> <img src="img/ajax-loader.gif" />';
         }
 
-        container.html('<div class="alert alert-' + type + ' alert-dismissible" role="alert">'
-            + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-            + message
-            //+ '<strong>Warning!</strong> Better check yourself, youre not looking too good.'
-            + '</div>');
-
+        container.html(tmpl('gitResponse', {
+            type: type,
+            message: message,
+            err: err
+        }));
     }
 
     /**
