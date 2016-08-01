@@ -100,7 +100,9 @@ $(function () {
 
     function scanRepository(repoPath) {
         var result = $('#gitContent');
+
         result.text('Loading info...');
+        $('#gitRepoConsole').html();
 
         var o = {};
 
@@ -131,11 +133,13 @@ $(function () {
                         var link = $(this).text();
 
                         if (0 == link.indexOf('git@')) {
-                            link = link.replace(':', '/')
+                            link = link
+                                .replace(':', '/')
                                 .replace('git@', 'https://');
                         }
 
                         shell.openExternal(link);
+
                         return false;
                     });
                 });
@@ -143,10 +147,31 @@ $(function () {
                 $('span.gitFileOptions').each(function () {
                     var parent = $(this).parent();
                     var file = parent.text().trim();
-                    $(this).html(tmpl('gitFileOptions'));
+
+                    var dataOptions = $(this).attr('data-options');
+                    var options = dataOptions ? dataOptions.split(',') : [];
+                    var hideDefaults = $(this).attr('data-hide-defaults') ? true : false;
+
+                    $(this).html(tmpl('gitFileOptions', {'options':options, 'hideDefaults':hideDefaults}));
 
                     $(this).parent().find('a').on('click', function () {
                         handleFileOptions($(this).text(), repoPath, file, $(parent.find('.codemirror')));
+                    });
+                });
+
+                $('#btnFetchRepo').on('click', function () {
+                    console.log('fetching...');
+                    require('simple-git')(repoPath).fetch(function(err, data){
+                        console.log({'err' : err, 'data':data});
+                        displayGitResponse('Fetch', $('#gitRepoConsole'), err, data);
+                    });
+                });
+
+                $('#btnPullRepo').on('click', function () {
+                    console.log('pulling...');
+                    require('simple-git')(repoPath).pull(function(err, data){
+                        console.log({'err' : err, 'data':data});
+                        displayGitResponse('Pull', $('#gitRepoConsole'), err, data);
                     });
                 });
             })
@@ -215,6 +240,14 @@ $(function () {
                     CodeMirror.autoLoadMode(editor, mode);
                 });
                 break;
+            case 'Revert':
+                console.log('reverting...');
+                require('simple-git')(path)
+                    .checkout(file, function (err, data) {
+                        scanRepository(path);
+                        displayGitResponse('Revert', $('#gitRepoConsole'), err, data);
+                    });
+                break;
             case 'File Manager':
                 shell.showItemInFolder(fullPath);
                 break;
@@ -222,6 +255,29 @@ $(function () {
                 shell.openItem(fullPath);
                 break;
         }
+    }
+
+    function displayGitResponse(action, container, err, data) {
+
+        var type = 'info', message = action + ' completed.';
+        if(err) {
+            type = 'danger';
+            message = '<strong>Error</strong><pre>' + err + '</pre>';
+
+            //container.html('<pre class="alert alert-danger">' + err + '</pre>');
+        } else if(data) {
+            message = JSON.stringify(data);
+            //container.html('<pre class="alert alert-info">' + JSON.stringify(data) + '</pre>');
+        } else {
+            //container.html('<pre class="alert alert-info">Action completed.</pre>');
+        }
+
+        container.html('<div class="alert alert-' + type + ' alert-dismissible" role="alert">'
+            + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+            + message
+            //+ '<strong>Warning!</strong> Better check yourself, youre not looking too good.'
+            + '</div>');
+
     }
 
     /**

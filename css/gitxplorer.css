@@ -23,6 +23,10 @@ h3, h4, h5 {
     color:#555555;
 }
 
+.well {
+    background: none;
+}
+
 @media (min-width: 767px) {
     #navigation{
         position: fixed;
@@ -30,6 +34,7 @@ h3, h4, h5 {
         overflow: auto;
         overflow-x: hidden;
         margin-top: 40px;
+        padding-bottom: 40px;
     }
 }
 
