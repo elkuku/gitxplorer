@@ -88,7 +88,7 @@ $(function () {
             }
             else {
                 li.addClass('gitDir');
-                li.find('.gitStatus').text('loading...');
+                li.find('.gitStatus').html('<img src="img/ajax-loader.gif" />.');
                 li.on('click', function () {
                     $(this).parent().find('li').removeClass('active');
                     $(this).addClass('active');
@@ -119,7 +119,7 @@ $(function () {
     function scanRepository(repoPath) {
         var result = $('#gitContent');
 
-        result.text('Loading info...');
+        result.html('Loading info <img src="img/ajax-loader.gif" />');
         $('#gitRepoConsole').html('');
 
         var o = {};
@@ -258,7 +258,6 @@ $(function () {
                 });
                 break;
             case 'Revert':
-                console.log('reverting...');
                 require('simple-git')(path)
                     .checkout(file, function (err, data) {
                         scanRepository(path);
