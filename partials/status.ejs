@@ -54,23 +54,23 @@
 
 <div id="tabRemotes" class="tab-pane fade">
     <ul class="unstyled gitRemotes">
-    <% for (var i=0; i<o.remotes.length; i++) { %>
+    <% o.remotes.forEach(function(remote) { %>
         <li>
-        <span class="gitBranch"><%=o.remotes[i].name%></span><br />
-        <b>Fetch:</b> <a href="javascript"><%=o.remotes[i].refs.fetch%></a><br />
-        <b>Push:</b> <a href="javascript"><%=o.remotes[i].refs.push%></a><br />
+        <span class="gitBranch"><%= remote.name %></span><br />
+        <b>Fetch:</b> <a href="javascript"><%= remote.refs.fetch %></a><br />
+        <b>Push:</b> <a href="javascript"><%= remote.refs.push %></a><br />
 
         </li>
-    <% } %>
+    <% }) %>
     </ul>
 </div>
 
 <% if (o.branchesInfo.all.length) { %>
  <div id="tabBranches" class="tab-pane fade">
     <ul class="unstyled">
-    <% for (var i=0; i<o.branchesInfo.all.length; i++) { %>
-        <li><%=o.branchesInfo.all[i]%></li>
-    <% } %>
+    <% o.branchesInfo.all.forEach(function(branch) { %>
+        <li><%= branch %></li>
+    <% }) %>
     </ul>
     </div>
 <% } %>
@@ -81,9 +81,9 @@
     <% if (o.tags.latest) { %>
         <li><b>Latest: <%=o.tags.latest%></b></li>
     <% } %>
-    <% for (var i=0; i<o.tags.all.length; i++) { %>
-        <li><%=o.tags.all[i]%></li>
-    <% } %>
+    <% o.tags.all.forEach(function(tag) { %>
+       <li><%= tag %></li>
+    <% }) %>
     </ul>
     </div>
 <% } %>
@@ -91,9 +91,9 @@
 <% if (o.status.conflicted.length) { %>
   <div id="tabConflicted" class="tab-pane fade">
     <ul class="gitFileConflicted unstyled">
-    <% for (var i=0; i<o.status.conflicted.length; i++) { %>
-        <li><span class="gitFileOptions" data-options="Show" /> <%=o.status.conflicted[i]%><textarea class="codemirror" /></li>
-    <% } %>
+    <% o.status.conflicted.forEach(function(file) { %>
+        <li><span class="gitFileOptions" data-options="Show" /> <%= file %><textarea class="codemirror" /></li>
+    <% }) %>
     </ul>
     </div>
 <% } %>
@@ -101,9 +101,9 @@
 <% if (o.status.created.length) { %>
    <div id="tabCreated" class="tab-pane fade">
     <ul class="gitFileCreated unstyled">
-    <% for (var i=0; i<o.status.created.length; i++) { %>
-        <li><span class="gitFileOptions" data-options="Show" /> <%=o.status.created[i]%><textarea class="codemirror" /></li>
-    <% } %>
+    <% o.status.created.forEach(function(file) { %>
+        <li><span class="gitFileOptions" data-options="Show" /> <%= file %><textarea class="codemirror" /></li>
+    <% }) %>
     </ul>
     </div>
 <% } %>
@@ -111,9 +111,9 @@
 <% if (o.status.deleted.length) { %>
    <div id="tabDeleted" class="tab-pane fade">
     <ul class="gitFileDeleted unstyled">
-    <% for (var i=0; i<o.status.deleted.length; i++) { %>
-        <li><span class="gitFileOptions" data-options="Revert" data-hide-defaults="true" /> <%=o.status.deleted[i]%></li>
-    <% } %>
+    <% o.status.deleted.forEach(function(file) { %>
+        <li><span class="gitFileOptions" data-options="Revert" data-hide-defaults="true" /> <%= file %></li>
+    <% }) %>
     </ul>
     </div>
 <% } %>
@@ -121,9 +121,9 @@
 <% if (o.status.modified.length) { %>
     <div id="tabModified" class="tab-pane fade">
     <ul class="gitFileModified unstyled">
-    <% for (var i=0; i<o.status.modified.length; i++) { %>
-        <li><span class="gitFileOptions" data-options="Show,Diff,Revert" /> <%=o.status.modified[i]%><textarea class="codemirror"></textarea></li>
-    <% } %>
+    <% o.status.modified.forEach(function(file) { %>
+        <li><span class="gitFileOptions" data-options="Show,Diff,Revert" /> <%= file %><textarea class="codemirror"></textarea></li>
+    <% }) %>
     </ul>
     </div>
 <% } %>
@@ -131,9 +131,9 @@
 <% if (o.status.not_added.length) { %>
    <div id="tabNotAdded" class="tab-pane fade">
     <ul class="gitFileNotAdded unstyled">
-    <% for (var i=0; i<o.status.not_added.length; i++) { %>
-        <li><span class="gitFileOptions" data-options="Show" /> <%=o.status.not_added[i]%><textarea class="codemirror" /></li>
-    <% } %>
+    <% o.status.not_added.forEach(function(file) { %>
+        <li><span class="gitFileOptions" data-options="Show" /> <%= file %><textarea class="codemirror" /></li>
+    <% }) %>
     </ul>
     </div>
 <% } %>

@@ -3,9 +3,9 @@
     File <span class="caret"></span>
   </button>
   <ul class="dropdown-menu gitFileOptions">
-    <% for (var i=0; i < options.length; i++) { %>
-        <li><a href="#"><%= options[i] %></a></li>
-    <% } %>
+      <% options.forEach(function(option) { %>
+        <li><a href="#"><%= option %></a></li>
+      <% }); %>
     <% if (true != hideDefaults) { %>
         <li class="divider"></li>
         <li><a href="#">Open</a></li>
