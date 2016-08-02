@@ -1,0 +1,18 @@
+<div class="btn-group">
+  <button class="btn btn-inverse btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    File <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu gitFileOptions">
+    <% for (var i=0; i < options.length; i++) { %>
+        <li><a href="#"><%= options[i] %></a></li>
+    <% } %>
+    <% if (true != hideDefaults) { %>
+        <li class="divider"></li>
+        <li><a href="#">Open</a></li>
+        <li><a href="#">File Manager</a></li>
+    <% } %>
+  </ul>
+</div>
+<script type="text/x-tmpl" id="gitFileOptions">
+</script>
+

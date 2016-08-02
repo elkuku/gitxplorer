@@ -1,0 +1,142 @@
+
+<h4><%=o.repoPath%></h4>
+
+<!-- Tab header -->
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#tabInfo">Info</a></li>
+    <li><a data-toggle="tab" href="#tabRemotes">Remotes (<%=o.remotes.length%>)</a></li>
+    <% if (o.branchesInfo.all.length) { %>
+        <li><a data-toggle="tab" href="#tabBranches">Branches (<%=o.branchesInfo.all.length%>)</a></li>
+    <% } %>
+    <% if (o.tags.all.length) { %>
+        <li><a data-toggle="tab" href="#tabTags">Tags (<%=o.tags.all.length%>)</a></li>
+    <% } %>
+    <% if (o.status.conflicted.length) { %>
+        <li><a data-toggle="tab" href="#tabConflicted" class="gitFileConflicted">Conflicted (<%=o.status.conflicted.length%>)</a></li>
+    <% } %>
+    <% if (o.status.created.length) { %>
+        <li><a data-toggle="tab" href="#tabCreated" class="gitFileCreated">Created (<%=o.status.created.length%>)</a></li>
+    <% } %>
+    <% if (o.status.deleted.length) { %>
+        <li><a data-toggle="tab" href="#tabDeleted" class="gitFileDeleted">Deleted (<%=o.status.deleted.length%>)</a></li>
+    <% } %>
+    <% if (o.status.modified.length) { %>
+        <li><a data-toggle="tab" href="#tabModified" class="gitFileModified">Modified  (<%=o.status.modified.length%>)</a></li>
+    <% } %>
+    <% if (o.status.not_added.length) { %>
+        <li><a data-toggle="tab" href="#tabNotAdded" class="gitFileNotAdded">Not added (<%=o.status.not_added.length%>)</a></li>
+    <% } %>
+</ul>
+
+<!-- Tab content -->
+<div class="tab-content">
+
+<div id="tabInfo" class="tab-pane fade in active">
+    <div class="well">
+        On Branch: <span class="gitBranch"><%=o.status.current%></span>
+        Tracking: <span class="gitBranch"><%=o.status.tracking%></span>
+        <% if (o.status.ahead || o.status.behind) { %>
+            <% if (o.status.ahead) { %>
+                <span class="gitBranchNotInSync">Ahead: <%=o.status.ahead%></span>
+            <% } %>
+            <% if (o.status.behind) { %>
+                 <span class="gitBranchNotInSync">Behind: <%=o.status.behind%></span>
+           <% } %>
+        <% } else { %>
+            <span class="gitBranchInSync">in sync</span>
+        <% } %>
+    </div>
+    <div class="btn-group">
+        <a class="btn btn-inverse" id="btnFetchRepo">Fetch</a>
+        <a class="btn btn-inverse" id="btnPullRepo">Pull</a>
+    </div>
+</div>
+
+<div id="tabRemotes" class="tab-pane fade">
+    <ul class="unstyled gitRemotes">
+    <% for (var i=0; i<o.remotes.length; i++) { %>
+        <li>
+        <span class="gitBranch"><%=o.remotes[i].name%></span><br />
+        <b>Fetch:</b> <a href="javascript"><%=o.remotes[i].refs.fetch%></a><br />
+        <b>Push:</b> <a href="javascript"><%=o.remotes[i].refs.push%></a><br />
+
+        </li>
+    <% } %>
+    </ul>
+</div>
+
+<% if (o.branchesInfo.all.length) { %>
+ <div id="tabBranches" class="tab-pane fade">
+    <ul class="unstyled">
+    <% for (var i=0; i<o.branchesInfo.all.length; i++) { %>
+        <li><%=o.branchesInfo.all[i]%></li>
+    <% } %>
+    </ul>
+    </div>
+<% } %>
+
+<% if (o.tags.all.length) { %>
+  <div id="tabTags" class="tab-pane fade">
+   <ul class="unstyled">
+    <% if (o.tags.latest) { %>
+        <li><b>Latest: <%=o.tags.latest%></b></li>
+    <% } %>
+    <% for (var i=0; i<o.tags.all.length; i++) { %>
+        <li><%=o.tags.all[i]%></li>
+    <% } %>
+    </ul>
+    </div>
+<% } %>
+
+<% if (o.status.conflicted.length) { %>
+  <div id="tabConflicted" class="tab-pane fade">
+    <ul class="gitFileConflicted unstyled">
+    <% for (var i=0; i<o.status.conflicted.length; i++) { %>
+        <li><span class="gitFileOptions" data-options="Show" /> <%=o.status.conflicted[i]%><textarea class="codemirror" /></li>
+    <% } %>
+    </ul>
+    </div>
+<% } %>
+
+<% if (o.status.created.length) { %>
+   <div id="tabCreated" class="tab-pane fade">
+    <ul class="gitFileCreated unstyled">
+    <% for (var i=0; i<o.status.created.length; i++) { %>
+        <li><span class="gitFileOptions" data-options="Show" /> <%=o.status.created[i]%><textarea class="codemirror" /></li>
+    <% } %>
+    </ul>
+    </div>
+<% } %>
+
+<% if (o.status.deleted.length) { %>
+   <div id="tabDeleted" class="tab-pane fade">
+    <ul class="gitFileDeleted unstyled">
+    <% for (var i=0; i<o.status.deleted.length; i++) { %>
+        <li><span class="gitFileOptions" data-options="Revert" data-hide-defaults="true" /> <%=o.status.deleted[i]%></li>
+    <% } %>
+    </ul>
+    </div>
+<% } %>
+
+<% if (o.status.modified.length) { %>
+    <div id="tabModified" class="tab-pane fade">
+    <ul class="gitFileModified unstyled">
+    <% for (var i=0; i<o.status.modified.length; i++) { %>
+        <li><span class="gitFileOptions" data-options="Show,Diff,Revert" /> <%=o.status.modified[i]%><textarea class="codemirror"></textarea></li>
+    <% } %>
+    </ul>
+    </div>
+<% } %>
+
+<% if (o.status.not_added.length) { %>
+   <div id="tabNotAdded" class="tab-pane fade">
+    <ul class="gitFileNotAdded unstyled">
+    <% for (var i=0; i<o.status.not_added.length; i++) { %>
+        <li><span class="gitFileOptions" data-options="Show" /> <%=o.status.not_added[i]%><textarea class="codemirror" /></li>
+    <% } %>
+    </ul>
+    </div>
+<% } %>
+</div>
+<script type="text/x-tmpl" id="gitStatus">
+</script>

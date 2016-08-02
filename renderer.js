@@ -1,14 +1,14 @@
 $(function () {
 
     const
-        tmpl = require('./bower_components/JavaScript-Templates/js/tmpl'),
         os = require('os'),
         {shell} = require('electron'),
         {dialog} = require('electron').remote,
         Conf = require('conf'),
         config = new Conf(),
         fs = require('fs'),
-        path = require('path');
+        path = require('path')
+        ejs = require('ejs');
 
     // Check if "Wheit" (Light) theme is selected
     if ('Wheit' == config.get('theme')) {
@@ -55,7 +55,20 @@ $(function () {
     });
 
     /**
-     * Reload the whole story
+     * Load a ejs template.
+     *
+     * @param name
+     * @param object
+     *
+     * @returns {String}
+     */
+    function loadTemplate(name, object) {
+        var tpl = fs.readFileSync(__dirname + '/partials/' + name + '.ejs');
+        return ejs.render(tpl.toString(), object);
+    }
+
+    /**
+     * Reload the whole story.
      */
     function reload() {
         var workDir = config.get('workDir');
@@ -92,12 +105,17 @@ $(function () {
             var result = $(this).find('.gitStatus');
             if (result.text()) {
                 require('simple-git')(workDir + '/' + dir).status(function (err, status) {
-                    result.html(tmpl('gitStatusRow', status));
+                    result.html(loadTemplate('statusRow', {o:status}));
                 })
             }
         });
     }
 
+    /**
+     * Scan the repository.
+     *
+     * @param repoPath
+     */
     function scanRepository(repoPath) {
         var result = $('#gitContent');
 
@@ -126,7 +144,7 @@ $(function () {
             })
             .then(function () {
 
-                result.html(tmpl('gitStatus', o));
+                result.html(loadTemplate('status', {o:o}));
 
                 $('ul.gitRemotes a').each(function (idx, a) {
                     $(a).on('click', function () {
@@ -152,7 +170,7 @@ $(function () {
                     var options = dataOptions ? dataOptions.split(',') : [];
                     var hideDefaults = $(this).attr('data-hide-defaults') ? true : false;
 
-                    $(this).html(tmpl('gitFileOptions', {'options':options, 'hideDefaults':hideDefaults}));
+                    $(this).html(loadTemplate('fileOptions', {options:options, hideDefaults:hideDefaults}));
 
                     $(this).parent().find('a').on('click', function () {
                         handleFileOptions($(this).text(), repoPath, file, $(parent.find('.codemirror')));
@@ -176,7 +194,8 @@ $(function () {
     }
 
     /**
-     * Handle file options
+     * Handle file options.
+     *
      * @param command
      * @param path
      * @param file
@@ -255,6 +274,14 @@ $(function () {
         }
     }
 
+    /**
+     * Display an alert.
+     *
+     * @param action
+     * @param container
+     * @param err
+     * @param data
+     */
     function displayGitResponse(action, container, err, data) {
 
         var type = 'info',
@@ -269,21 +296,19 @@ $(function () {
             message = '<strong>Processing</strong> <img src="img/ajax-loader.gif" />';
         }
 
-        container.html(tmpl('gitResponse', {
-            type: type,
-            message: message,
-            err: err
-        }));
+        container.html(loadTemplate('gitResponse', {type:type, message:message}));
     }
 
     /**
-     * Show the configuration
+     * Show the configuration.
      */
     function showConfig() {
-        $('#gitContent').html(tmpl('gitXplorerConfig', config));
+        $('#gitContent').html(loadTemplate('config', {o:config}));
+
         $('#btnSaveConfig').on('click', function () {
             saveConfig();
         });
+
         $('#cfgTheme').on('change', function () {
             var e = $('head link#styleSheet');
 
@@ -296,7 +321,7 @@ $(function () {
     }
 
     /**
-     * Save the configuration
+     * Save the configuration.
      */
     function saveConfig() {
         var workDir = $('#cfgWorkDir').val();
@@ -318,7 +343,8 @@ $(function () {
     }
 
     /**
-     * Get a list of directories
+     * Get a list of directories.
+     *
      * @param {string} srcPath The source path
      * @returns array
      */

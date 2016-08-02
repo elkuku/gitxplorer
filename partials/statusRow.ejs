@@ -1,0 +1,7 @@
+<span class="<% if (o.ahead || o.behind) { %>gitBranchNotInSync<% } %>"><%-o.ahead%> <%-o.behind%></span>
+ -
+<span class="<% if (o.conflicted.length) { %>gitFileConflicted<% } %>"><%-o.conflicted.length%></span>
+<span class="<% if (o.created.length) { %>gitFileCreated<% } %>"><%-o.created.length%></span>
+<span class="<% if (o.deleted.length) { %>gitFileDeleted<% } %>"><%-o.deleted.length%></span>
+<span class="<% if (o.modified.length) { %>gitFileModified<% } %>"><%-o.modified.length%></span>
+<span class="<% if (o.not_added.length) { %>gitFileNotAdded<% } %>"><%-o.not_added.length%></span>
