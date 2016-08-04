@@ -3,35 +3,50 @@
 html,body {
     height: 100%;
     font-family: 'Droid Sans Mono', sans-serif;
+    margin: 0;
 }
 
 p,h1,h2,h3,h4 {
     font-family: 'Droid Sans Mono', sans-serif;
 }
 
-body {
-    overflow-x: hidden;
-}
-
 h3, h4, h5 {
     color: #969696;
 }
 
-@media (min-width: 767px) {
-    #navigation{
-        position: fixed;
-        height: 100%;
-        overflow: auto;
-        overflow-x: hidden;
-        margin-top: 40px;
-    }
+.well {
+    padding: 5px;
 }
 
-.cmdBoxNavi {
-    position: fixed;
-    top: 0;
-    border-bottom: 1px solid silver;
+
+/* Generic pane rules */
+body { margin: 0; }
+.row, .col { overflow: hidden; position: absolute; }
+.row { left: 0; right: 0; margin: 0;}
+.col { top: 0; bottom: 0; }
+.scroll-x { overflow-x: auto; }
+.scroll-y { overflow-y: auto; }
+
+.left.col { width: 250px; }
+.right.col { left: 250px; right: 0; }
+.header.row { height: 100px; line-height: 100px; }
+.body.row { top: 100px; bottom: 50px; }
+.footer.row { height: 50px; bottom: 0; line-height: 50px; }
+
+.header.row.navi { height: 40px; line-height: 40px; background-color: #e7e7e7
 }
+.body.row.navi { top: 40px; bottom: 0; padding: 3px;}
+
+.gitRepoHeader {
+    background: #7bc4ff;
+}
+
+footer {
+    color: silver;
+    font-size: 0.8em;
+    text-align: center;
+}
+
 
 .noGitDir {
     color: #b4b4b4;
@@ -72,9 +87,6 @@ h3, h4, h5 {
 .gitRepoInfo {
     background-color: black;
 }
-.gitContent {
-    display: none;
-}
 
 textarea.codemirror {
     display: none;
@@ -83,19 +95,11 @@ textarea.codemirror {
 /* Tabs */
 
 .nav-tabs > li > a {
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding: 2px;
 }
 
 .tab-content {
-    padding-top: 10px;
-}
-
-footer {
-    position: fixed;
-    bottom: 0;
-    border-top: 1px solid silver;
-    background: #b0b0b0;
+    padding-top: 5px;
 }
 
 ul.unstyled {

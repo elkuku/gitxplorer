@@ -5,48 +5,47 @@
     <title>GitXplorer</title>
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="bower_components/codemirror/lib/codemirror.css" rel="stylesheet">
-    <link id="styleSheet" href="css/gitxplorer.css" rel="stylesheet">
+    <link id="styleSheet2" href="css/gitxplorerx.css" rel="stylesheet">
+    <link id="styleSheet" href="css/gitxplorer2.css" rel="stylesheet">
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <div id="navigation" class="col-lg-2 col-md-3 col-sm-3">
-            <div class="cmdBoxNavi btn-group">
-                <a data-toggle="reload" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Reload" title="Reload">
-                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-                </a>
-                <a data-toggle="theme" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Theme" title="Theme">
-                    <span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>
-                </a>
-                <a data-toggle="config" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Config" title="Config">
-                    <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
-                </a>
-            </div>
-
-            <ul class="list-unstyled"></ul>
-
+<div class="left col">
+    <div class="header row navi">
+        <div class="cmdBoxNavi btn-group">
+            <a data-toggle="reload" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Reload" title="Reload">
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="theme" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Theme" title="Theme">
+                <span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="config" class="btn btn-inverse btn-sm" href="#" role="button" aria-label="Config" title="Config">
+                <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            </a>
         </div>
-
-        <div class="col-lg-2 col-md-3 col-sm-3 hidden-xs">
-            <!-- Placeholder - keep empty -->
+    </div>
+    <div class="body row scroll-y navi">
+        <ul id="navigation" class="list-unstyled"></ul>
+    </div>
+</div>
+<div class="right col">
+    <div id="gitRepoHeader" class="header row">
+        <h2>gitXplorer <code>1.0</code></h2>
+    </div>
+    <div class="body row scroll-y">
+        <div id="gitRepoConsole" ></div>
+        <div id="gitContent" class="well">
+            <p>
+                Select a repository&hellip;
+            </p>
         </div>
-
-        <div id="main" class="col-lg-10 col-md-9 col-sm-9 fill">
-
-            <div id="gitRepoConsole" ></div>
-
-            <div id="gitContent">Select a repo...</div>
-
-            <footer>
-                <div class="container">
-                    node <script>document.write(process.versions.node)</script>
-                    - Chromium <script>document.write(process.versions.chrome)</script>
-                    - Electron <script>document.write(process.versions.electron)</script>
-                    <p class="stats"></p>
-                </div>
-            </footer>
-
-        </div>
+    </div>
+    <div class="footer row">
+        <footer>
+            gitXplorer 1.0 -
+            node <script>document.write(process.versions.node)</script>
+            - Chromium <script>document.write(process.versions.chrome)</script>
+            - Electron <script>document.write(process.versions.electron)</script>
+        </footer>
     </div>
 </div>
 

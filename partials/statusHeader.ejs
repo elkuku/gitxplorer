@@ -1,0 +1,29 @@
+
+<h4><%=o.repoPath%></h4>
+
+<!-- Tab header -->
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#tabInfo">Info</a></li>
+    <li><a data-toggle="tab" href="#tabRemotes">Remotes (<%=o.remotes.length%>)</a></li>
+    <% if (o.branchesInfo.all.length) { %>
+    <li><a data-toggle="tab" href="#tabBranches">Branches (<%=o.branchesInfo.all.length%>)</a></li>
+    <% } %>
+    <% if (o.tags.all.length) { %>
+    <li><a data-toggle="tab" href="#tabTags">Tags (<%=o.tags.all.length%>)</a></li>
+    <% } %>
+    <% if (o.status.conflicted.length) { %>
+    <li><a data-toggle="tab" href="#tabConflicted" class="gitFileConflicted">Conflicted (<%=o.status.conflicted.length%>)</a></li>
+    <% } %>
+    <% if (o.status.created.length) { %>
+    <li><a data-toggle="tab" href="#tabCreated" class="gitFileCreated">Created (<%=o.status.created.length%>)</a></li>
+    <% } %>
+    <% if (o.status.deleted.length) { %>
+    <li><a data-toggle="tab" href="#tabDeleted" class="gitFileDeleted">Deleted (<%=o.status.deleted.length%>)</a></li>
+    <% } %>
+    <% if (o.status.modified.length) { %>
+    <li><a data-toggle="tab" href="#tabModified" class="gitFileModified">Modified  (<%=o.status.modified.length%>)</a></li>
+    <% } %>
+    <% if (o.status.not_added.length) { %>
+    <li><a data-toggle="tab" href="#tabNotAdded" class="gitFileNotAdded">Not added (<%=o.status.not_added.length%>)</a></li>
+    <% } %>
+</ul>

@@ -1,7 +1,6 @@
 $(function () {
 
     const
-        os = require('os'),
         {shell} = require('electron'),
         {dialog} = require('electron').remote,
         Conf = require('conf'),
@@ -12,12 +11,8 @@ $(function () {
 
     // Check if "Wheit" (Light) theme is selected
     if ('Wheit' == config.get('theme')) {
-        $('head link#styleSheet').attr('href', 'css/gitxplorer_light.css');
+        //$('head link#styleSheet').attr('href', 'css/gitxplorer_light.css');
     }
-
-    $('.stats')
-        .append('Number of cpu cores: <span>' + os.cpus().length + '</span>')
-        .append(' - Free memory: <span>' + os.freemem() + '</span>');
 
     if (!config.get('workDir')) {
         showConfig();
@@ -41,7 +36,6 @@ $(function () {
 
     cmdBox.find('[data-toggle=reload]').on('click', function () {
         reload();
-        $('#gitContent').text('Select a repo...');
     });
 
     cmdBox.find('[data-toggle=theme]').on('click', function () {
@@ -73,9 +67,12 @@ $(function () {
     function reload() {
         var workDir = config.get('workDir');
         var dirs = getDirectories(workDir);
-        var container = $('#navigation ul');
+        var container = $('#navigation');
 
         container.empty();
+
+        $('#gitRepoHeader').html('<h2>gitXplorer <code>1.0</code></h2>');
+        $('#gitContent').html('Select a repo&hellip;');
 
         for (let dir of dirs) {
 
@@ -119,8 +116,11 @@ $(function () {
     function scanRepository(repoPath) {
         var result = $('#gitContent');
 
-        result.html('Loading info <img src="img/ajax-loader.gif" />');
+        var header = $('#gitRepoHeader');
+
+        header.html('Loading info <img src="img/ajax-loader.gif" />');
         $('#gitRepoConsole').html('');
+        result.html('');
 
         var o = {};
 
@@ -145,6 +145,7 @@ $(function () {
             .then(function () {
 
                 result.html(loadTemplate('status', {o:o}));
+                header.html(loadTemplate('statusHeader', {o:o}));
 
                 $('ul.gitRemotes a').each(function (idx, a) {
                     $(a).on('click', function () {
@@ -302,6 +303,7 @@ $(function () {
      * Show the configuration.
      */
     function showConfig() {
+        $('#gitRepoHeader').html('<h3>Configuration</h3>');
         $('#gitContent').html(loadTemplate('config', {o:config}));
 
         $('#btnSaveConfig').on('click', function () {
