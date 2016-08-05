@@ -93,7 +93,7 @@ $(function () {
             }
             else {
                 li.addClass('gitDir');
-                li.find('.gitStatus').html('<img src="img/ajax-loader.gif" />.');
+                li.find('.gitStatus').html('<img src="img/ajax-loader.gif" />');
                 li.on('click', function () {
                     $(this).parent().find('li').removeClass('active');
                     $(this).addClass('active');
