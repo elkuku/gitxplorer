@@ -5,8 +5,7 @@
     <title>GitXplorer</title>
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="bower_components/codemirror/lib/codemirror.css" rel="stylesheet">
-    <link id="styleSheet2" href="css/gitxplorerx.css" rel="stylesheet">
-    <link id="styleSheet" href="css/gitxplorer2.css" rel="stylesheet">
+    <link id="styleSheet" href="css/gitxplorer.css" rel="stylesheet">
 </head>
 <body>
 <div class="left col">
@@ -28,23 +27,22 @@
     </div>
 </div>
 <div class="right col">
-    <div id="gitRepoHeader" class="header row">
-        <h2>gitXplorer <code>1.0</code></h2>
-    </div>
+    <div id="gitRepoHeader" class="header row"></div>
     <div class="body row scroll-y">
-        <div id="gitRepoConsole" ></div>
-        <div id="gitContent" class="well">
-            <p>
-                Select a repository&hellip;
-            </p>
-        </div>
+        <div id="gitRepoConsole"></div>
+        <div id="gitContent"></div>
     </div>
     <div class="footer row">
         <footer>
-            gitXplorer 1.0 -
-            node <script>document.write(process.versions.node)</script>
-            - Chromium <script>document.write(process.versions.chrome)</script>
-            - Electron <script>document.write(process.versions.electron)</script>
+            <script>
+            document.write(
+                    process.env.npm_package_displayName
+                    + ' ' + process.env.npm_package_version
+                    + ' - node ' + process.versions.node
+                    + ' - Chromium ' + process.versions.chrome
+                    + ' - Electron ' + process.versions.electron
+            )
+            </script>
         </footer>
     </div>
 </div>

@@ -30,21 +30,29 @@ body { margin: 0; }
 .left.col { width: 250px; }
 .right.col { left: 250px; right: 0; }
 .header.row { height: 100px; line-height: 100px; }
-.body.row { top: 100px; bottom: 50px; }
+.body.row { top: 100px; bottom: 50px; padding: 5px; }
 .footer.row { height: 50px; bottom: 0; line-height: 50px; }
 
-.header.row.navi { height: 40px; line-height: 40px; background-color: #e7e7e7
+.header.row.navi {
+    height: 40px;
+    line-height: 40px;
+    background-color: #e7e7e7;
+    text-align: center;
 }
-.body.row.navi { top: 40px; bottom: 0; padding: 3px;}
+.body.row.navi {
+    top: 40px;
+    bottom: 0; }
 
-.gitRepoHeader {
-    background: #7bc4ff;
+#gitRepoHeader {
+    background: #e7e7e7;
+    text-align: center;
 }
 
 footer {
     color: silver;
     font-size: 0.8em;
     text-align: center;
+    border-top: 1px solid silver;
 }
 
 

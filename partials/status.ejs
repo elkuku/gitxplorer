@@ -1,113 +1,112 @@
-
 <!-- Tab content -->
 <div class="tab-content">
 
-<div id="tabInfo" class="tab-pane fade in active">
-    <div class="well">
-        On Branch: <span class="gitBranch"><%=o.status.current%></span>
-        Tracking: <span class="gitBranch"><%=o.status.tracking%></span>
-        <% if (o.status.ahead || o.status.behind) { %>
-            <% if (o.status.ahead) { %>
-                <span class="gitBranchNotInSync">Ahead: <%=o.status.ahead%></span>
-            <% } %>
-            <% if (o.status.behind) { %>
-                 <span class="gitBranchNotInSync">Behind: <%=o.status.behind%></span>
-           <% } %>
-        <% } else { %>
+    <div id="tabInfo" class="tab-pane fade in active">
+        <p>
+            On Branch: <span class="gitBranch"><%= o.status.current %></span>
+            Tracking: <span class="gitBranch"><%= o.status.tracking %></span>
+            <% if (o.status.ahead || o.status.behind) { %>
+                <% if (o.status.ahead) { %>
+                <span class="gitBranchNotInSync">Ahead: <%= o.status.ahead %></span>
+                <% } %>
+                <% if (o.status.behind) { %>
+                <span class="gitBranchNotInSync">Behind: <%= o.status.behind %></span>
+                <% } %>
+            <% } else { %>
             <span class="gitBranchInSync">in sync</span>
-        <% } %>
+            <% } %>
+        </p>
+        <div class="btn-group">
+            <a class="btn btn-default" id="btnFetchRepo">Fetch</a>
+            <a class="btn btn-default" id="btnPullRepo">Pull</a>
+        </div>
     </div>
-    <div class="btn-group">
-        <a class="btn btn-inverse" id="btnFetchRepo">Fetch</a>
-        <a class="btn btn-inverse" id="btnPullRepo">Pull</a>
+
+    <div id="tabRemotes" class="tab-pane fade">
+        <ul class="unstyled gitRemotes">
+            <% o.remotes.forEach(function(remote) { %>
+            <li>
+                <span class="gitBranch"><%= remote.name %></span><br/>
+                <b>Fetch:</b> <a href="javascript"><%= remote.refs.fetch %></a><br/>
+                <b>Push:</b> <a href="javascript"><%= remote.refs.push %></a><br/>
+
+            </li>
+            <% }) %>
+        </ul>
     </div>
-</div>
 
-<div id="tabRemotes" class="tab-pane fade">
-    <ul class="unstyled gitRemotes">
-    <% o.remotes.forEach(function(remote) { %>
-        <li>
-        <span class="gitBranch"><%= remote.name %></span><br />
-        <b>Fetch:</b> <a href="javascript"><%= remote.refs.fetch %></a><br />
-        <b>Push:</b> <a href="javascript"><%= remote.refs.push %></a><br />
-
-        </li>
-    <% }) %>
-    </ul>
-</div>
-
-<% if (o.branchesInfo.all.length) { %>
- <div id="tabBranches" class="tab-pane fade">
-    <ul class="unstyled">
-    <% o.branchesInfo.all.forEach(function(branch) { %>
-        <li><%= branch %></li>
-    <% }) %>
-    </ul>
+    <% if (o.branchesInfo.all.length) { %>
+    <div id="tabBranches" class="tab-pane fade">
+        <ul class="unstyled">
+            <% o.branchesInfo.all.forEach(function(branch) { %>
+            <li><%= branch %></li>
+            <% }) %>
+        </ul>
     </div>
-<% } %>
-
-<% if (o.tags.all.length) { %>
-  <div id="tabTags" class="tab-pane fade">
-   <ul class="unstyled">
-    <% if (o.tags.latest) { %>
-        <li><b>Latest: <%=o.tags.latest%></b></li>
     <% } %>
-    <% o.tags.all.forEach(function(tag) { %>
-       <li><%= tag %></li>
-    <% }) %>
-    </ul>
-    </div>
-<% } %>
 
-<% if (o.status.conflicted.length) { %>
-  <div id="tabConflicted" class="tab-pane fade">
-    <ul class="gitFileConflicted unstyled">
-    <% o.status.conflicted.forEach(function(file) { %>
-        <li><span class="gitFileOptions" data-options="Show" /> <%= file %><textarea class="codemirror" /></li>
-    <% }) %>
-    </ul>
+    <% if (o.tags.all.length) { %>
+    <div id="tabTags" class="tab-pane fade">
+        <ul class="unstyled">
+            <% if (o.tags.latest) { %>
+            <li><b>Latest: <%= o.tags.latest %></b></li>
+            <% } %>
+            <% o.tags.all.forEach(function(tag) { %>
+            <li><%= tag %></li>
+            <% }) %>
+        </ul>
     </div>
-<% } %>
+    <% } %>
 
-<% if (o.status.created.length) { %>
-   <div id="tabCreated" class="tab-pane fade">
-    <ul class="gitFileCreated unstyled">
-    <% o.status.created.forEach(function(file) { %>
-        <li><span class="gitFileOptions" data-options="Show" /> <%= file %><textarea class="codemirror" /></li>
-    <% }) %>
-    </ul>
+    <% if (o.status.conflicted.length) { %>
+    <div id="tabConflicted" class="tab-pane fade">
+        <ul class="gitFileConflicted unstyled">
+            <% o.status.conflicted.forEach(function(file) { %>
+            <li><span class="gitFileOptions" data-options="Show"/> <%= file %><textarea class="codemirror"/></li>
+            <% }) %>
+        </ul>
     </div>
-<% } %>
+    <% } %>
 
-<% if (o.status.deleted.length) { %>
-   <div id="tabDeleted" class="tab-pane fade">
-    <ul class="gitFileDeleted unstyled">
-    <% o.status.deleted.forEach(function(file) { %>
-        <li><span class="gitFileOptions" data-options="Revert" data-hide-defaults="true" /> <%= file %></li>
-    <% }) %>
-    </ul>
+    <% if (o.status.created.length) { %>
+    <div id="tabCreated" class="tab-pane fade">
+        <ul class="gitFileCreated unstyled">
+            <% o.status.created.forEach(function(file) { %>
+            <li><span class="gitFileOptions" data-options="Show"/> <%= file %><textarea class="codemirror"/></li>
+            <% }) %>
+        </ul>
     </div>
-<% } %>
+    <% } %>
 
-<% if (o.status.modified.length) { %>
+    <% if (o.status.deleted.length) { %>
+    <div id="tabDeleted" class="tab-pane fade">
+        <ul class="gitFileDeleted unstyled">
+            <% o.status.deleted.forEach(function(file) { %>
+            <li><span class="gitFileOptions" data-options="Revert" data-hide-defaults="true"/> <%= file %></li>
+            <% }) %>
+        </ul>
+    </div>
+    <% } %>
+
+    <% if (o.status.modified.length) { %>
     <div id="tabModified" class="tab-pane fade">
-    <ul class="gitFileModified unstyled">
-    <% o.status.modified.forEach(function(file) { %>
-        <li><span class="gitFileOptions" data-options="Show,Diff,Revert" /> <%= file %><textarea class="codemirror"></textarea></li>
-    <% }) %>
-    </ul>
+        <ul class="gitFileModified unstyled">
+            <% o.status.modified.forEach(function(file) { %>
+            <li><span class="gitFileOptions" data-options="Show,Diff,Revert"/> <%= file %><textarea
+                        class="codemirror"></textarea></li>
+            <% }) %>
+        </ul>
     </div>
-<% } %>
+    <% } %>
 
-<% if (o.status.not_added.length) { %>
-   <div id="tabNotAdded" class="tab-pane fade">
-    <ul class="gitFileNotAdded unstyled">
-    <% o.status.not_added.forEach(function(file) { %>
-        <li><span class="gitFileOptions" data-options="Show" /> <%= file %><textarea class="codemirror" /></li>
-    <% }) %>
-    </ul>
+    <% if (o.status.not_added.length) { %>
+    <div id="tabNotAdded" class="tab-pane fade">
+        <ul class="gitFileNotAdded unstyled">
+            <% o.status.not_added.forEach(function(file) { %>
+            <li><span class="gitFileOptions" data-options="Show,Delete"/> <%= file %><textarea class="codemirror"/></li>
+            <% }) %>
+        </ul>
     </div>
-<% } %>
+    <% } %>
+
 </div>
-<script type="text/x-tmpl" id="gitStatus">
-</script>

@@ -1,4 +1,5 @@
-<span class="<% if (o.ahead || o.behind) { %>gitBranchNotInSync<% } %>"><%-o.ahead%> <%-o.behind%></span>
+<span class="<% if (o.ahead) { %>gitBranchNotInSync<% } %>"><%-o.ahead%></span>
+<span class="<% if (o.behind) { %>gitBranchNotInSync<% } %>"> <%-o.behind%></span>
  -
 <span class="<% if (o.conflicted.length) { %>gitFileConflicted<% } %>"><%-o.conflicted.length%></span>
 <span class="<% if (o.created.length) { %>gitFileCreated<% } %>"><%-o.created.length%></span>

@@ -6,12 +6,12 @@ $(function () {
         Conf = require('conf'),
         config = new Conf(),
         fs = require('fs'),
-        path = require('path')
+        path = require('path'),
         ejs = require('ejs');
 
     // Check if "Wheit" (Light) theme is selected
     if ('Wheit' == config.get('theme')) {
-        //$('head link#styleSheet').attr('href', 'css/gitxplorer_light.css');
+        $('head link#styleSheet').attr('href', 'css/gitxplorer_light.css');
     }
 
     if (!config.get('workDir')) {
@@ -19,6 +19,7 @@ $(function () {
     }
     else {
         if (fs.existsSync(config.get('workDir'))) {
+            initContent();
             reload();
         }
         else {
@@ -36,6 +37,7 @@ $(function () {
 
     cmdBox.find('[data-toggle=reload]').on('click', function () {
         reload();
+        initContent(loadTemplate('alert', {type:'info', message:'Reload finished.'}));
     });
 
     cmdBox.find('[data-toggle=theme]').on('click', function () {
@@ -61,6 +63,15 @@ $(function () {
         return ejs.render(tpl.toString(), object);
     }
 
+    function initContent(message) {
+        $('#gitRepoHeader').html('<h2>' + process.env.npm_package_displayName + ' <code>' + process.env.npm_package_version + '</code></h2>');
+        $('#gitContent').html(loadTemplate('alert', {type:'info', message:'Select a repository&hellip;'}));
+
+        if (message) {
+            $('#gitRepoConsole').html(message);
+        }
+    }
+
     /**
      * Reload the whole story.
      */
@@ -70,9 +81,6 @@ $(function () {
         var container = $('#navigation');
 
         container.empty();
-
-        $('#gitRepoHeader').html('<h2>gitXplorer <code>1.0</code></h2>');
-        $('#gitContent').html('Select a repo&hellip;');
 
         for (let dir of dirs) {
 
@@ -203,7 +211,8 @@ $(function () {
      * @param cmContainer
      */
     function handleFileOptions(command, path, file, cmContainer) {
-        var fullPath = path + '/' + file;
+        var fullPath = path + '/' + file,
+            resp;
         CodeMirror.modeURL = './bower_components/codemirror/mode/%N/%N.js';
         switch (command) {
             case 'Diff':
@@ -259,11 +268,30 @@ $(function () {
                 });
                 break;
             case 'Revert':
-                require('simple-git')(path)
-                    .checkout(file, function (err, data) {
-                        scanRepository(path);
-                        displayGitResponse('Revert', $('#gitRepoConsole'), err, data);
-                    });
+                resp = dialog.showMessageBox({
+                    title:'Revert',
+                    message:'The file will be reverted!',
+                    buttons:['I know...', 'Oh NO']
+                });
+                if (!resp) {
+                    require('simple-git')(path)
+                        .checkout(file, function (err, data) {
+                            scanRepository(path);
+                            displayGitResponse('Revert', $('#gitRepoConsole'), err, data);
+                        });
+                }
+                break;
+            case 'Delete':
+                resp = dialog.showMessageBox({
+                    title:'Delete',
+                    message:'The file will be deleted!',
+                    buttons:['I know...', 'Oh NO']
+                });
+                if (!resp) {
+                    fs.unlinkSync(fullPath);
+                    scanRepository(path);
+                    $('#gitRepoConsole').html(loadTemplate('alert', {type:'info', message:'The file has been deleted.'}));
+                }
                 break;
             case 'File Manager':
                 shell.showItemInFolder(fullPath);
@@ -296,7 +324,7 @@ $(function () {
             message = '<strong>Processing</strong> <img src="img/ajax-loader.gif" />';
         }
 
-        container.html(loadTemplate('gitResponse', {type:type, message:message}));
+        container.html(loadTemplate('alert', {type:type, message:message}));
     }
 
     /**
@@ -338,7 +366,7 @@ $(function () {
         config.set('debug', debug);
         config.set('theme', theme);
 
-        $('#gitContent').html('Config saved.<br />Select a repo...');
+        initContent(loadTemplate('alert', {type:'info', message:'Config saved.'}));
 
         reload();
     }

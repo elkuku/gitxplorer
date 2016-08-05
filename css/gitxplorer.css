@@ -36,20 +36,30 @@ body { margin: 0; }
 .left.col { width: 250px; }
 .right.col { left: 250px; right: 0; }
 .header.row { height: 100px; line-height: 100px; }
-.body.row { top: 100px; bottom: 50px; }
+.body.row { top: 100px; bottom: 50px; padding: 5px; }
 .footer.row { height: 50px; bottom: 0; line-height: 50px; }
 
-.header.row.navi { height: 40px; line-height: 40px; background-color: #0F192A}
-.body.row.navi { top: 40px; bottom: 0; padding: 3px;}
+.header.row.navi {
+    height: 40px;
+    line-height: 40px;
+    background-color: #000000;
+    text-align: center;
+}
+.body.row.navi {
+    top: 40px;
+    bottom: 0;
+}
 
-.gitRepoHeader {
-    background: #0C1021;
+#gitRepoHeader {
+    background: #000000;
+    text-align: center;
 }
 
 footer {
     color: silver;
     font-size: 0.8em;
     text-align: center;
+    border-top: 1px solid silver;
 }
 
 
@@ -157,4 +167,9 @@ textarea.codemirror {
 ul.unstyled {
     -webkit-padding-start: 0;
     list-style-type: none;
+}
+
+.btn-default {
+    background-color: #404040;
+    color: silver;
 }
