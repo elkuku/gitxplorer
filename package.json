@@ -1,13 +1,14 @@
 {
   "name": "gitxplorer",
-  "displayName": "gitXplorer",
+  "productName": "gitXploprer",
   "version": "1.0.0",
   "description": "A git repository explorer",
   "author": "elkuku",
   "license": "GPL-3.0",
   "main": "main.js",
   "scripts": {
-    "start": "./node_modules/.bin/electron ."
+    "start": "./node_modules/.bin/electron .",
+    "build": "electron-packager . --appname=gitXplorer --arch=x64 --platform=linux --version=1.3.2 --overwrite"
   },
   "repository": {
     "type": "git",

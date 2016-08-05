@@ -36,7 +36,6 @@ body { margin: 0; }
 .header.row.navi {
     height: 40px;
     line-height: 40px;
-    background-color: #e7e7e7;
     text-align: center;
 }
 .body.row.navi {
@@ -44,7 +43,6 @@ body { margin: 0; }
     bottom: 0; }
 
 #gitRepoHeader {
-    background: #e7e7e7;
     text-align: center;
 }
 

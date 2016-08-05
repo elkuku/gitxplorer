@@ -64,7 +64,7 @@ $(function () {
     }
 
     function initContent(message) {
-        $('#gitRepoHeader').html('<h2>' + process.env.npm_package_displayName + ' <code>' + process.env.npm_package_version + '</code></h2>');
+        $('#gitRepoHeader').html('<h2>' + process.env.npm_package_productName + ' <code>' + process.env.npm_package_version + '</code></h2>');
         $('#gitContent').html(loadTemplate('alert', {type:'info', message:'Select a repository&hellip;'}));
 
         if (message) {
