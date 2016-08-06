@@ -16,9 +16,9 @@ $(function () {
         // Check if "Wheit" (Light) theme is selected
         if ('Wheit' == config.get('theme')) {
             $('head link#styleSheet').attr('href', 'css/gitxplorer_light.css');
-            }
+        }
 
-        $('footer').prepend(pjson.productName + ' ' + pjson.version + ' - ');
+        $('footer').prepend('<img src="img/logo.png" height="16px"/> ' + pjson.productName + ' ' + pjson.version + ' - ');
 
         $('.header.row.navi').html(loadTemplate('cmdBox', {}));
 
@@ -73,7 +73,7 @@ $(function () {
     }
 
     function initContent(message) {
-        $('#gitRepoHeader').html('<h2>' + pjson.productName + ' <code>' + pjson.version + '</code></h2>');
+        $('#gitRepoHeader').html('<h2><img src="img/logo.png" height="70px"/> ' + pjson.productName + ' <code>' + pjson.version + '</code></h2>');
         $('#gitContent').html(loadTemplate('alert', {type:'info', message:'Select a repository&hellip;'}));
 
         if (message) {
@@ -340,7 +340,7 @@ $(function () {
      * Show the configuration.
      */
     function showConfig() {
-        $('#gitRepoHeader').html('<h3>Configuration</h3>');
+        $('#gitRepoHeader').html('<h3><img src="img/logo.png" height="70px"/> Configuration</h3>');
         $('#gitContent').html(loadTemplate('config', {o:config}));
 
         $('#btnSaveConfig').on('click', function () {

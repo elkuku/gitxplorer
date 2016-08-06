@@ -1,25 +1,29 @@
 "use strict";
 
-const electron = require('electron')
-
-const Conf = require('conf');
-const config = new Conf();
-
-// Module to control application life.
-const app = electron.app
-
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+const
+    electron = require('electron'),
+    Conf = require('conf'),
+    config = new Conf(),
+    // Module to control application life.
+    app = electron.app,
+    //NativeImage = require('native-image'),
+    // Module to create native browser window.
+    BrowserWindow = electron.BrowserWindow
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
 function createWindow() {
-    var bgColor = ('Wheit' == config.get('theme')) ? '#ffffff' : '#1e1e1e';
+    var bgColor = ('Wheit' == config.get('theme')) ? '#ffffff' : '#1e1e1e'
 
     // Create the browser window.
-    mainWindow = new BrowserWindow({width: 800, height: 600, backgroundColor: bgColor})
+    mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        backgroundColor: bgColor,
+        icon: 'img/logo.png'
+    })
 
     mainWindow.setMenu(null);
 
