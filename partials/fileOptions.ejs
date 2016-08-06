@@ -4,7 +4,11 @@
   </button>
   <ul class="dropdown-menu gitFileOptions">
       <% options.forEach(function(option) { %>
-        <li><a href="#"><%= option %></a></li>
+      <% if ('divider' == option) { %>
+      <li class="divider"></li>
+      <% } else { %>
+      <li><a href="#"><%= option %></a></li>
+      <% } %>
       <% }); %>
     <% if (true != hideDefaults) { %>
         <li class="divider"></li>

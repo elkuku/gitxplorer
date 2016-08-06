@@ -92,7 +92,7 @@
     <div id="tabModified" class="tab-pane fade">
         <ul class="gitFileModified unstyled">
             <% o.status.modified.forEach(function(file) { %>
-            <li><span class="gitFileOptions" data-options="Show,Diff,Revert"/> <%= file %><textarea
+            <li><span class="gitFileOptions" data-options="Show,Diff,divider,Revert"/> <%= file %><textarea
                         class="codemirror"></textarea></li>
             <% }) %>
         </ul>
@@ -103,7 +103,7 @@
     <div id="tabNotAdded" class="tab-pane fade">
         <ul class="gitFileNotAdded unstyled">
             <% o.status.not_added.forEach(function(file) { %>
-            <li><span class="gitFileOptions" data-options="Show,Delete"/> <%= file %><textarea class="codemirror"/></li>
+            <li><span class="gitFileOptions" data-options="Show,divider,Delete"/> <%= file %><textarea class="codemirror"/></li>
             <% }) %>
         </ul>
     </div>
