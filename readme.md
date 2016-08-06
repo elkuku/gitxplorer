@@ -33,7 +33,7 @@ The is also a "light" theme for "day"ly use:
 
 ![2016-07-31-074039_802x623_scrot](https://cloud.githubusercontent.com/assets/33978/17276543/8d614b94-56f2-11e6-8aaf-851edbd6d425.png)
 
-### License
+## License
 
 ![wtfpl-badge-1](https://cloud.githubusercontent.com/assets/33978/17457116/62074500-5bb3-11e6-8788-7e3c01dad590.png) See: [copying](copying)
 
