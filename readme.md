@@ -10,11 +10,25 @@ You can further inspect the files showing a diff or the content, or open them in
 
 ## Installation
 
+### Linux
+
+[**Download**](https://github.com/elkuku/gitxplorer/releases/latest) and unzip to some location.
+
+To add a shortcut to the app, create a file in `~/.local/share/applications` called `gitxplorer.desktop` with the following contents:
+
+```
+[Desktop Entry]
+Name=gitXplorer
+Exec=/full/path/to/folder/gitXplorer
+Terminal=false
+Type=Application
+Categories=Development
+Icon=/full/path/to/folder/gitXplorer/resources/app/img/logo.png
+```
+
+### dev
     npm install
     bower install
-    
-## Usage
-
     npm start
 
 ## Screens
