@@ -7,48 +7,57 @@ $(function () {
         config = new Conf(),
         fs = require('fs'),
         path = require('path'),
-        ejs = require('ejs');
+        ejs = require('ejs'),
+        pjson = require('./package.json');
 
-    // Check if "Wheit" (Light) theme is selected
-    if ('Wheit' == config.get('theme')) {
-        $('head link#styleSheet').attr('href', 'css/gitxplorer_light.css');
-    }
+    setup();
 
-    if (!config.get('workDir')) {
-        showConfig();
-    }
-    else {
-        if (fs.existsSync(config.get('workDir'))) {
-            initContent();
+    function setup() {
+        // Check if "Wheit" (Light) theme is selected
+        if ('Wheit' == config.get('theme')) {
+            $('head link#styleSheet').attr('href', 'css/gitxplorer_light.css');
+            }
+
+        $('footer').prepend(pjson.productName + ' ' + pjson.version + ' - ');
+
+        $('.header.row.navi').html(loadTemplate('cmdBox', {}));
+
+        // Setup buttons
+        var cmdBox = $('.cmdBoxNavi');
+
+        cmdBox.find('[data-toggle=config]').on('click', function () {
+            showConfig();
+        });
+
+        cmdBox.find('[data-toggle=reload]').on('click', function () {
             reload();
-        }
-        else {
-            dialog.showErrorBox('Invalid Path', 'The working directory path set in configuration is invalid');
+            initContent(loadTemplate('alert', {type:'info', message:'Reload finished.'}));
+        });
+
+        cmdBox.find('[data-toggle=theme]').on('click', function () {
+            var e = $('head link#styleSheet');
+
+            if (e.attr('href').indexOf('light') > 0) {
+                e.attr('href', 'css/gitxplorer.css');
+            } else {
+                e.attr('href', 'css/gitxplorer_light.css');
+            }
+        });
+
+        if (!config.get('workDir')) {
             showConfig();
         }
-    }
-
-    // Setup buttons
-    var cmdBox = $('.cmdBoxNavi');
-
-    cmdBox.find('[data-toggle=config]').on('click', function () {
-        showConfig();
-    });
-
-    cmdBox.find('[data-toggle=reload]').on('click', function () {
-        reload();
-        initContent(loadTemplate('alert', {type:'info', message:'Reload finished.'}));
-    });
-
-    cmdBox.find('[data-toggle=theme]').on('click', function () {
-        var e = $('head link#styleSheet');
-
-        if (e.attr('href').indexOf('light') > 0) {
-            e.attr('href', 'css/gitxplorer.css');
-        } else {
-            e.attr('href', 'css/gitxplorer_light.css');
+        else {
+            if (fs.existsSync(config.get('workDir'))) {
+                initContent();
+                reload();
+            }
+            else {
+                dialog.showErrorBox('Invalid Path', 'The working directory path set in configuration is invalid');
+                showConfig();
+            }
         }
-    });
+    }
 
     /**
      * Load a ejs template.
@@ -64,7 +73,7 @@ $(function () {
     }
 
     function initContent(message) {
-        $('#gitRepoHeader').html('<h2>' + process.env.npm_package_productName + ' <code>' + process.env.npm_package_version + '</code></h2>');
+        $('#gitRepoHeader').html('<h2>' + pjson.productName + ' <code>' + pjson.version + '</code></h2>');
         $('#gitContent').html(loadTemplate('alert', {type:'info', message:'Select a repository&hellip;'}));
 
         if (message) {
@@ -108,7 +117,7 @@ $(function () {
         $('#navigation li.gitDir').each(function () {
             var dir = $(this).attr('id');
             var result = $(this).find('.gitStatus');
-            if (result.text()) {
+            if (result.html()) {
                 require('simple-git')(workDir + '/' + dir).status(function (err, status) {
                     result.html(loadTemplate('statusRow', {o:status}));
                 })
