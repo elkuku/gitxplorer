@@ -222,7 +222,7 @@ $(function () {
     function handleFileOptions(command, path, file, cmContainer) {
         var fullPath = path + '/' + file,
             resp;
-        CodeMirror.modeURL = './bower_components/codemirror/mode/%N/%N.js';
+        CodeMirror.modeURL = './node_modules/codemirror/mode/%N/%N.js';
         switch (command) {
             case 'Diff':
                 require('simple-git')(path)
