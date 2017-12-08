@@ -27,9 +27,8 @@ Icon=/full/path/to/folder/gitXplorer/resources/app/img/logo.png
 ```
 
 ### dev
-    npm install
-    bower install
-    npm start
+    yarn install
+    yarn start
 
 ## Screens
 
